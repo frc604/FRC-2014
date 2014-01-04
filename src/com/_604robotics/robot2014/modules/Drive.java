@@ -17,7 +17,12 @@ public class Drive extends Module {
                 define("wheel", 0D);
             }}) {
                 public void run (ActionData data) {
-                    drive.arcadeDrive(data.get("throttle"), data.get("wheel"));
+                    double throttle = data.get("throttle");
+                    double wheel = data.get("wheel");
+                    
+                    wheel *= throttle * 2;
+                    
+                    drive.arcadeDrive(throttle, wheel);
                 }
                 
                 public void end (ActionData data) {
