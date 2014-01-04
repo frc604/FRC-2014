@@ -1,0 +1,3 @@
+[submodule "src/com/_604robotics/robotnik"]
+	path = src/com/_604robotics/robotnik
+	url = git@github.com:frc604/robotnik-framework.git
