@@ -8,9 +8,8 @@ public class Dashboard extends Module {
     public Dashboard () {
         this.set(new TriggerMap() {{
             final DashboardTriggerChoice driveMode = new DashboardTriggerChoice("Drive Mode");
+            add("Tank Drive", driveMode.addDefault("Tank Drive"));
             add("Arcade Drive", driveMode.add("Arcade Drive"));
-            add("Tank Drive", driveMode.add("Tank Drive"));
-            add("Quix Drive", driveMode.addDefault("Quix Drive"));
         }});
     }
 }

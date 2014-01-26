@@ -7,7 +7,6 @@ import com._604robotics.robotnik.module.ModuleManager;
 import com._604robotics.robotnik.prefabs.controller.joystick.JoystickController;
 import com._604robotics.robotnik.prefabs.controller.wheel.WheelController;
 import com._604robotics.robotnik.prefabs.controller.xbox.XboxController;
-import com._604robotics.robotnik.prefabs.trigger.TriggerAlways;
 import com._604robotics.robotnik.prefabs.trigger.TriggerOr;
 import com._604robotics.robotnik.prefabs.trigger.TriggerToggle;
 import com._604robotics.robotnik.trigger.TriggerAccess;
@@ -34,17 +33,11 @@ public class TeleopMode extends Coordinator {
             {
                 this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
                 this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", throttle.axisY));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "wheel", wheel.axis));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", wheel.axis));
                 
                 this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
                 this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", manipulator.leftStick.Y));
                 this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", manipulator.rightStick.Y));
-                
-                this.bind(new Binding(modules.getModule("Drive").getAction("Quix Drive"), modules.getModule("Dashboard").getTrigger("Quix Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Quix Drive"), "wheel", wheel.axis));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Quix Drive"), "throttle", throttle.axisY));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Quix Drive"), "sharp", throttle.buttons.Button1));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Quix Drive"), "highGear", modules.getModule("Shifter").getAction("High Gear").active()));
             }
             
             /* Shifter */
