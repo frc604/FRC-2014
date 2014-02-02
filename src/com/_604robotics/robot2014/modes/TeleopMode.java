@@ -73,7 +73,7 @@ public class TeleopMode extends Coordinator {
             
             /* Intake */
             {
-                this.bind(new Binding(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button6));
+                this.bind(new Binding(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button4));
             }
         }
     }

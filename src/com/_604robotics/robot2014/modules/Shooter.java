@@ -13,50 +13,50 @@ import edu.wpi.first.wpilibj.Victor;
 
 public class Shooter extends Module {
     private final Solenoid lock = new Solenoid(7);
-    private final Victor winch = new Victor(4);
-    private final DigitalInput limitSwitch = new DigitalInput(6);
+    private final Victor winch = new Victor(5);
+    private final DigitalInput limitSwitch = new DigitalInput(8);
     
     public Shooter () {
     	this.set(new TriggerMap() {{
-    		add("Charged", new Trigger() {
-				public boolean run() {
-					return limitSwitch.get();
-				}
-    		});
+            add("Charged", new Trigger() {
+                public boolean run() {
+                    return limitSwitch.get();
+                }
+            });
     	}});
     	
         this.set(new ElasticController () {{
             addDefault("Idle", new Action() {
-                public void begin (ActionData data) {
+                public void begin(ActionData data) {
                     lock.set(false);
                 }
-                
-                public void run (ActionData data) {
-                	winch.stopMotor();
+
+                public void run(ActionData data) {
+                    winch.stopMotor();
                 }
             });
             
             add("Retract", new Action() {
-                public void begin (ActionData data) {
+                public void begin(ActionData data) {
                     lock.set(false);
                 }
-                
-                public void run (ActionData data) {
-                	winch.set(-0.8);
+
+                public void run(ActionData data) {
+                    winch.set(-0.8);
                 }
-                
-                public void end (ActionData data) {
-                	winch.stopMotor();
+
+                public void end(ActionData data) {
+                    winch.stopMotor();
                 }
             });
             
             add("Deploy", new Action() {
-                public void begin (ActionData data) {
+                public void begin(ActionData data) {
                     lock.set(true);
                 }
-                
-                public void run (ActionData data) {
-                	winch.stopMotor();
+
+                public void run(ActionData data) {
+                    winch.stopMotor();
                 }
             });
         }});

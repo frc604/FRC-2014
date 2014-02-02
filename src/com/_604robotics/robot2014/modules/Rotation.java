@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Rotation extends Module {
+    private final Encoder encoder = new Encoder(6, 7);
     private final Victor motor = new Victor(4);
-    private final Encoder encoder = new Encoder (5,6);
     
-    private final PIDController pidController = new PIDController(0,0,0,encoder,motor);
+    private final PIDController pidController = new PIDController(0, 0, 0,encoder,motor);
             
     public Rotation () {
         this.set(new StateController() {{

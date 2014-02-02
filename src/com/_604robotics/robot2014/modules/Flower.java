@@ -15,7 +15,7 @@ public class Flower extends Module {
     public Flower () {
         this.set(new StateController () {{
             addDefault("Stow", new Action() {
-                public void begin (ActionData data) {
+                public void begin(ActionData data) {
                     top.set(false);
                     left.set(false);
                     right.set(false);
