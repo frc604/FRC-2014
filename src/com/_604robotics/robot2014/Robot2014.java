@@ -21,7 +21,6 @@ public class Robot2014 extends Robot {
             add("Drive", new Drive());
             add("Regulator", new Regulator());
             add("Shifter", new Shifter());
-            add("Flower", new Flower());
             add("Rotation", new Rotation());
             add("Intake", new Intake());
             add("Flower", new Flower());
