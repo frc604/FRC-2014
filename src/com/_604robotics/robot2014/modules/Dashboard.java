@@ -10,6 +10,7 @@ public class Dashboard extends Module {
             final DashboardTriggerChoice driveMode = new DashboardTriggerChoice("Drive Mode");
             add("Tank Drive", driveMode.addDefault("Tank Drive"));
             add("Arcade Drive", driveMode.add("Arcade Drive"));
+            add("Stick Drive", driveMode.add("Stick Drive"));
         }});
     }
 }

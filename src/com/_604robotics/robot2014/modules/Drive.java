@@ -14,7 +14,7 @@ public class Drive extends Module {
     private final RobotDrive drive = new RobotDrive(2, 1);
     
     private final Encoder leftEncoder = new Encoder(1, 2);
-    private final Encoder rightEncoder = new Encoder(3, 4);
+    private final Encoder rightEncoder = new Encoder(4, 3);
     
     public Drive () {
         leftEncoder.start();
@@ -72,6 +72,19 @@ public class Drive extends Module {
             }}) {
                 public void run (ActionData data) {
                     drive.tankDrive(data.get("left"), data.get("right"));
+                }
+                
+                public void end (ActionData data) {
+                    drive.stopMotor();
+                }
+            });
+            
+            add("Stick Drive", new Action(new FieldMap () {{
+                define("throttle", 0D);
+                define("turn", 0D);
+            }}) {
+                public void run (ActionData data) {
+                    drive.arcadeDrive(data.get("throttle"), data.get("turn"));
                 }
                 
                 public void end (ActionData data) {
