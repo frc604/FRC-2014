@@ -38,7 +38,7 @@ public class Shooter extends Module {
             
             add("Retract", new Action() {
                 public void begin (ActionData data) {
-                    lock.set(true);
+                    lock.set(false);
                 }
                 
                 public void run (ActionData data) {
@@ -52,7 +52,7 @@ public class Shooter extends Module {
             
             add("Deploy", new Action() {
                 public void begin (ActionData data) {
-                    lock.set(false);
+                    lock.set(true);
                 }
                 
                 public void run (ActionData data) {
