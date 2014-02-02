@@ -9,6 +9,7 @@ import com._604robotics.robot2014.modules.Intake;
 import com._604robotics.robot2014.modules.Regulator;
 import com._604robotics.robot2014.modules.Rotation;
 import com._604robotics.robot2014.modules.Shifter;
+import com._604robotics.robot2014.modules.Shooter;
 import com._604robotics.robotnik.Robot;
 import com._604robotics.robotnik.coordinator.ModeMap;
 import com._604robotics.robotnik.module.ModuleMap;
@@ -24,6 +25,7 @@ public class Robot2014 extends Robot {
             add("Rotation", new Rotation());
             add("Intake", new Intake());
             add("Flower", new Flower());
+            add("Shooter", new Shooter());
         }});
         
         this.set(new ModeMap() {{
