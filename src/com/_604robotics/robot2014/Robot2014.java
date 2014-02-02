@@ -5,6 +5,7 @@ import com._604robotics.robot2014.modes.TeleopMode;
 import com._604robotics.robot2014.modules.Dashboard;
 import com._604robotics.robot2014.modules.Drive;
 import com._604robotics.robot2014.modules.Flower;
+import com._604robotics.robot2014.modules.Intake;
 import com._604robotics.robot2014.modules.Regulator;
 import com._604robotics.robot2014.modules.Rotation;
 import com._604robotics.robot2014.modules.Shifter;
@@ -21,6 +22,8 @@ public class Robot2014 extends Robot {
             add("Shifter", new Shifter());
             add("Flower", new Flower());
             add("Rotation", new Rotation());
+            add("Intake", new Intake());
+            add("Flower", new Flower());
         }});
         
         this.set(new ModeMap() {{
