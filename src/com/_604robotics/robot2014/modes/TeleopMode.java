@@ -43,6 +43,8 @@ public class TeleopMode extends Coordinator {
                 this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
                 this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", leftDrive.axisY));
                 this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", leftDrive.axisX));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "leftScale", modules.getModule("Dashboard").getData("Drive Left Scale")));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "rightScale", modules.getModule("Dashboard").getData("Drive Right Scale")));
             }
             
             /* Shifter */
