@@ -82,19 +82,9 @@ public class Drive extends Module {
             add("Stick Drive", new Action(new FieldMap () {{
                 define("throttle", 0D);
                 define("turn", 0D);
-                
-                define("leftScale", 0D);
-                define("rightScale", 0D);
             }}) {
                 public void run (ActionData data) {
-                    //drive.arcadeDrive(data.get("throttle"), data.get("turn"));
-                    
-                    final double throttle = data.get("throttle");
-                    
-                    final double leftScale = data.get("leftScale");
-                    final double rightScale = data.get("rightScale");
-                    
-                    drive.setLeftRightMotorOutputs(throttle*leftScale, throttle*rightScale);
+                    drive.arcadeDrive(data.get("throttle"), data.get("turn"));
                 }
                 
                 public void end (ActionData data) {
