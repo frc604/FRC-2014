@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Shooter extends Module {
     private final Solenoid lock = new Solenoid(7);
     private final Victor winch = new Victor(5);
-    private final DigitalInput limitSwitch = new DigitalInput(8);
+    private final DigitalInput limitSwitch = new DigitalInput(6);
     
     public Shooter () {
     	this.set(new TriggerMap() {{

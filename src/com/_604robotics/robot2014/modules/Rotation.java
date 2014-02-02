@@ -4,12 +4,12 @@ import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.StateController;
 import com._604robotics.robotnik.module.Module;
-import edu.wpi.first.wpilibj.Encoder;
+import com._604robotics.robotnik.prefabs.devices.MA3A10;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Rotation extends Module {
-    private final Encoder encoder = new Encoder(6, 7);
+    private final MA3A10 encoder = new MA3A10(1);
     private final Victor motor = new Victor(4);
     
     private final PIDController pidController = new PIDController(0, 0, 0,encoder,motor);
