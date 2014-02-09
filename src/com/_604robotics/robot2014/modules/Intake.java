@@ -7,7 +7,7 @@ import com._604robotics.robotnik.module.Module;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Intake extends Module {
-    private final Victor motor = new Victor(4);
+    private final Victor motor = new Victor(5);
 
     public Intake() {
         this.set(new ElasticController() {{
