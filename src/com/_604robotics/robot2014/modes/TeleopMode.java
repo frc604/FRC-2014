@@ -19,11 +19,15 @@ public class TeleopMode extends Coordinator {
         leftDrive.axisY.setFactor(-1);
         rightDrive.axisY.setFactor(-1);
         rightDrive.axisX.setFactor(-1);
+        manipulator.axisY.setFactor(-1);
+        manipulator.axisX.setFactor(-1);
         
         leftDrive.axisX.setDeadband(0.3);
         leftDrive.axisY.setDeadband(0.3);
         rightDrive.axisX.setDeadband(0.3);
         rightDrive.axisY.setDeadband(0.3);
+        manipulator.axisX.setDeadband(0.3);
+        manipulator.axisY.setDeadband(0.3);
     }
     
     protected void apply (ModuleManager modules) {
@@ -63,6 +67,12 @@ public class TeleopMode extends Coordinator {
             
             /* Flower */
             {
+                this.bind(new Binding(modules.getModule("Flower").getAction("Manual"), manipulator.buttons.Button8));
+                this.fill(new DataWire(modules.getModule("Flower").getAction("Manual"), "power", manipulator.axisY));
+                
+                this.bind(new Binding(modules.getModule("Flower").getAction("Manual Angle"), manipulator.buttons.Button9));
+                this.fill(new DataWire(modules.getModule("Flower").getAction("Manual Angle"), "setpoint", modules.getModule("Dashboard").getData("Manual Rotation Angle")));
+                
                 this.bind(new Binding(modules.getModule("Flower").getAction("Stow"), manipulator.buttons.Button3));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Catch"), manipulator.buttons.Button2));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"), manipulator.buttons.Button5));
