@@ -4,6 +4,8 @@ import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.StateController;
 import com._604robotics.robotnik.action.field.FieldMap;
+import com._604robotics.robotnik.data.Data;
+import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.prefabs.devices.MA3A10;
 import edu.wpi.first.wpilibj.PIDController;
@@ -11,16 +13,30 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Rotation extends Module {
-    private final MA3A10 encoder = new MA3A10(4, 1);
+    private final MA3A10 encoder = new MA3A10(2, 1);
     private final Victor motor = new Victor(3);
     
-    private final PIDController pid = new PIDController(0, 0, 0, encoder, motor);
+    private final PIDController pid = new PIDController(-0.05, 0, 0, encoder, motor);
             
     public Rotation () {
         SmartDashboard.putData("Rotation PID", pid);
         
+        this.set(new DataMap() {{
+            add("Encoder Ticks", new Data() {
+                public double run () {
+                    return encoder.getRaw();
+                }
+            });
+            
+            add("Encoder Angle", new Data() {
+                public double run () {
+                    return encoder.getAngle();
+                }
+            });
+        }});
+        
         this.set(new StateController() {{
-            addDefault("Manual", new Action(new FieldMap() {{
+            add("Manual", new Action(new FieldMap() {{
                 define("power", 0D);
             }}) {
                 public void run (ActionData data) {
@@ -51,9 +67,9 @@ public class Rotation extends Module {
                 }
             });
             
-            add("Stow", new AngleAction(0D));
-            add("Shoot", new AngleAction(45D));
-            add("Pickup", new AngleAction(120D));
+            addDefault("Stow", new AngleAction(215D));
+            add("Shoot", new AngleAction(180D));
+            add("Pickup", new AngleAction(108D));
         }});
     }
     

@@ -19,7 +19,7 @@ public class Intake extends Module {
 
             add("On", new Action() {
                 public void run(ActionData data) {
-                    motor.set(1D);
+                    motor.set(-1D);
                 }
 
                 public void end(ActionData data) {
