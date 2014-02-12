@@ -20,7 +20,7 @@ public class Shooter extends Module {
     	this.set(new TriggerMap() {{
             add("Charged", new Trigger() {
                 public boolean run() {
-                    return limitSwitch.get();
+                    return !limitSwitch.get();
                 }
             });
     	}});
