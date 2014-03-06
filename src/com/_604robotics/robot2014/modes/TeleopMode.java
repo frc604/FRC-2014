@@ -1,9 +1,6 @@
 package com._604robotics.robot2014.modes;
 
 import com._604robotics.robotnik.coordinator.Coordinator;
-import com._604robotics.robotnik.coordinator.connectors.Binding;
-import com._604robotics.robotnik.coordinator.connectors.DataWire;
-import com._604robotics.robotnik.coordinator.connectors.Group;
 import com._604robotics.robotnik.module.ModuleManager;
 import com._604robotics.robotnik.prefabs.controller.joystick.JoystickController;
 import com._604robotics.robotnik.prefabs.controller.xbox.XboxController;
@@ -55,26 +52,26 @@ public class TeleopMode extends Coordinator {
         {
             /* Drive */
             {
-                this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left",  driver.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driver.rightStick.Y));
+                bind(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive"));
+                wire(modules.getModule("Drive").getAction("Tank Drive"), "left",  driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Tank Drive"), "right", driver.rightStick.Y);
                 
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", leftDrive.axisY));
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", rightDrive.axisY));
+                //fill(modules.getModule("Drive").getAction("Tank Drive"), "left", leftDrive.axisY);
+                //fill(modules.getModule("Drive").getAction("Tank Drive"), "right", rightDrive.axisY);
                 
-                this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driver.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn",     driver.rightStick.X));
+                bind(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive"));
+                wire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Arcade Drive"), "turn",     driver.rightStick.X);
                 
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", rightDrive.axisY));
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", leftDrive.axisX));
+                //fill(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", rightDrive.axisY);
+                //fill(modules.getModule("Drive").getAction("Arcade Drive"), "turn", leftDrive.axisX);
                 
-                this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driver.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn",     driver.rightStick.X));
+                bind(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive"));
+                wire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Stick Drive"), "turn",     driver.rightStick.X);
                 
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", leftDrive.axisY));
-                //this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", leftDrive.axisX));
+                //fill(modules.getModule("Drive").getAction("Stick Drive"), "throttle", leftDrive.axisY);
+                //fill(modules.getModule("Drive").getAction("Stick Drive"), "turn", leftDrive.axisX);
             }
             
             /* Shifter */
@@ -83,8 +80,8 @@ public class TeleopMode extends Coordinator {
                     driver.buttons.RB
                     //leftDrive.buttons.Button1, rightDrive.buttons.Button1
                 }), true);
-                this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear"),  toggle.off));
-                this.bind(new Binding(modules.getModule("Shifter").getAction("High Gear"), toggle.on));
+                bind(modules.getModule("Shifter").getAction("Low Gear"),  toggle.off);
+                bind(modules.getModule("Shifter").getAction("High Gear"), toggle.on);
             }
         }
         
@@ -92,74 +89,74 @@ public class TeleopMode extends Coordinator {
         {
             /* Shooter */
             {
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"), manipulator.buttons.Button7));
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"),  manipulator.buttons.Button1));
+                bind(modules.getModule("Shooter").getAction("Retract"), manipulator.buttons.Button7);
+                bind(modules.getModule("Shooter").getAction("Deploy"),  manipulator.buttons.Button1);
             }
             
             /* Rotation */
             {
                 /* Manual Operation */
                 {
-                    this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "power", manipulator.axisY));
+                    wire(modules.getModule("Rotation").getAction("Manual"), "power", manipulator.axisY);
                 
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Hold"),         manipulator.buttons.Button9));
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle"), manipulator.buttons.Button11));
+                    bind(modules.getModule("Rotation").getAction("Hold"),         manipulator.buttons.Button9);
+                    bind(modules.getModule("Rotation").getAction("Manual Angle"), manipulator.buttons.Button11);
                 }
                 
                 /* Rotation Presets */
                 {
                     final TriggerAccess rotationEnabled = new TriggerNot(manipulator.buttons.Button10);
 
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Ground"), new TriggerAnd(new TriggerAccess[] {
+                    bind(modules.getModule("Rotation").getAction("Ground"), new TriggerAnd(new TriggerAccess[] {
                         new TriggerOr(new TriggerAccess[] {
                             manipulator.buttons.Button2, manipulator.buttons.Button8,
                         }), rotationEnabled
-                    })));
+                    }));
 
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot"), new TriggerAnd(new TriggerAccess[] {
+                    bind(modules.getModule("Rotation").getAction("Shoot"), new TriggerAnd(new TriggerAccess[] {
                         manipulator.buttons.Button3, rotationEnabled
-                    })));
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"), new TriggerAnd(new TriggerAccess[] {
+                    }));
+                    bind(modules.getModule("Rotation").getAction("Stow"), new TriggerAnd(new TriggerAccess[] {
                         manipulator.buttons.Button6, rotationEnabled
-                    })));
+                    }));
                 }
             }
             
             /* Flower */
             {
-                this.bind(new Binding(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4, true));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Open"),   manipulator.buttons.Button5));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Pickup"), manipulator.buttons.Button2));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Drop"),   manipulator.buttons.Button8));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerAccess[] {
+                bind(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4, true);
+                bind(modules.getModule("Flower").getAction("Open"),   manipulator.buttons.Button5);
+                bind(modules.getModule("Flower").getAction("Pickup"), manipulator.buttons.Button2);
+                bind(modules.getModule("Flower").getAction("Drop"),   manipulator.buttons.Button8);
+                bind(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerAccess[] {
                     manipulator.buttons.Button3, manipulator.buttons.Button11
-                })));
+                }));
             }
             
             /* Intake */
             {
-                this.bind(new Binding(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button2));
+                bind(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button2);
             }
             
             /* Truss Macro */
             {
-                this.group(new Group(driver.buttons.LB, new Coordinator() {
+                group(driver.buttons.LB, new Coordinator() {
                     protected void apply(ModuleManager modules) {
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Truss"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not()));
+                        bind(modules.getModule("Rotation").getAction("Truss"),
+                                modules.getModule("Shooter").getTrigger("Deployed").not());
                         
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"),
-                                modules.getModule("Shooter").getTrigger("Deployed")));
+                        bind(modules.getModule("Rotation").getAction("Stow"),
+                                modules.getModule("Shooter").getTrigger("Deployed"));
                         
-                        this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"),
-                                modules.getModule("Shooter").getAction("Deploy").active(), true));
+                        bind(modules.getModule("Shooter").getAction("Deploy"),
+                                modules.getModule("Shooter").getAction("Deploy").active(), true);
                         
-                        this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not()));
-                        this.bind(new Binding(modules.getModule("Flower").getAction("Open"),
-                                modules.getModule("Shooter").getTrigger("Deployed")));
+                        bind(modules.getModule("Flower").getAction("Shoot"),
+                                modules.getModule("Shooter").getTrigger("Deployed").not());
+                        bind(modules.getModule("Flower").getAction("Open"),
+                                modules.getModule("Shooter").getTrigger("Deployed"));
                     }
-                }));
+                });
             }
         }
     }

@@ -1,8 +1,6 @@
 package com._604robotics.robot2014.modes;
 
 import com._604robotics.robotnik.coordinator.Coordinator;
-import com._604robotics.robotnik.coordinator.connectors.Binding;
-import com._604robotics.robotnik.coordinator.connectors.DataWire;
 import com._604robotics.robotnik.module.ModuleManager;
 import com._604robotics.robotnik.prefabs.measure.TriggerMeasure;
 import com._604robotics.robotnik.prefabs.trigger.TriggerAnd;
@@ -14,14 +12,14 @@ public class AutonomousMode extends Procedure {
     public AutonomousMode () {
         super(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
-                this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
+                bind(modules.getModule("Rotation").getAction("Shoot"));
+                bind(modules.getModule("Shifter").getAction("Low Gear"));
                 
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
-                this.bind(new Binding(modules.getModule("Intake").getAction("On"), new TriggerAnd(new TriggerAccess[] {
+                bind(modules.getModule("Shooter").getAction("Retract"));
+                bind(modules.getModule("Intake").getAction("On"), new TriggerAnd(new TriggerAccess[] {
                     modules.getModule("Shooter").getTrigger("Charged"),
                     modules.getModule("Shooter").getTrigger("Deployed").not()
-                })));
+                }));
             }
         });
     }
@@ -29,22 +27,22 @@ public class AutonomousMode extends Procedure {
     protected void apply (ModuleManager modules) {
         add("Snap", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Snapped")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Flower").getAction("Close")));
-                this.bind(new Binding(modules.getModule("Vision").getAction("Snap")));
+                bind(modules.getModule("Flower").getAction("Close"));
+                bind(modules.getModule("Vision").getAction("Snap"));
             }
         }));
         
         add("Align", new Step(new TriggerMeasure(modules.getModule("Drive").getTrigger("At Servo Target")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Drive").getAction("Servo")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1400));
+                bind(modules.getModule("Drive").getAction("Servo"));
+                wire(modules.getModule("Drive").getAction("Servo"), "clicks", 1400);
             }
         }));
         
         add("Pause", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Ready")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Vision").getAction("Pause")));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
+                bind(modules.getModule("Vision").getAction("Pause"));
+                bind(modules.getModule("Flower").getAction("Shoot"));
             }
         }));
         
@@ -52,8 +50,8 @@ public class AutonomousMode extends Procedure {
         
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1700));
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
+                wire(modules.getModule("Drive").getAction("Servo"), "clicks", 1700);
+                bind(modules.getModule("Shooter").getAction("Deploy"), true);
             }
         }));
     }
