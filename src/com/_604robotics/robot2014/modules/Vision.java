@@ -1,11 +1,11 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
-import com._604robotics.robotnik.action.ActionData;
+import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.action.controllers.ElasticController;
-import com._604robotics.robotnik.action.field.FieldMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
+import com._604robotics.robotnik.trigger.TriggerAccess;
 import com._604robotics.robotnik.trigger.TriggerMap;
 import com._604robotics.robotnik.trigger.sources.NetworkTrigger;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,8 +16,8 @@ public class Vision extends Module {
     private static final int PAUSING  = 1;
     private static final int READY    = 2;
 
-    private boolean leftTarget  = false;
-    private boolean rightTarget = false;
+    private boolean leftSnapped  = false;
+    private boolean rightSnapped = false;
     
     private int state = SNAPPING;
     
@@ -43,42 +43,45 @@ public class Vision extends Module {
             addDefault("Idle");
             
             add("Snap", new Action() {
+                private final TriggerAccess leftTarget  = trigger("Left Target");
+                private final TriggerAccess rightTarget = trigger("Right Target");
+                
                 private final Timer timer = new Timer();
                 
-                public void begin (ActionData data) {
+                public void begin () {
                     state = SNAPPING;
                     timer.start();
                 }
                 
-                public void run (ActionData data) {
+                public void run () {
                     if (timer.get() > 0.75) {
                         state = PAUSING;
                     } else {
-                        leftTarget  = data.trigger("Left Target");
-                        rightTarget = data.trigger("Right Target");
+                        leftSnapped  = leftTarget.get();
+                        rightSnapped = rightTarget.get();
                     }
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     timer.stop();
                     timer.reset();
                 }
             });
             
-            add("Pause", new Action(new FieldMap() {{
-                define("leftSide" , false);
-                define("rightSide", false);
-            }}) {
-                public void begin (ActionData data) {
+            add("Pause", new Action() {
+                private final Field leftSide  = field("leftSide",  false);
+                private final Field rightSide = field("rightSide", false);
+                
+                public void begin () {
                     state = PAUSING;
                 }
                 
-                public void run (ActionData data) {
-                    if (data.is("leftSide")) {
-                        if (!leftTarget && DriverStation.getInstance().getMatchTime() < 6)
+                public void run () {
+                    if (leftSide.on()) {
+                        if (!leftSnapped && DriverStation.getInstance().getMatchTime() < 6)
                             return;
-                    } else if (data.is("rightSide")) {
-                        if (!rightTarget && DriverStation.getInstance().getMatchTime() < 6)
+                    } else if (rightSide.on()) {
+                        if (!rightSnapped && DriverStation.getInstance().getMatchTime() < 6)
                             return;
                     }
                     

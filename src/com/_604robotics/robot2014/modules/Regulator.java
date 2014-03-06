@@ -1,7 +1,6 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
-import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
@@ -22,11 +21,11 @@ public class Regulator extends Module {
         
         this.set(new ElasticController() {{
             addDefault("On", new Action() {
-                public void begin (ActionData data) {
+                public void begin () {
                     compressor.start();
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     compressor.stop();
                 }
             });

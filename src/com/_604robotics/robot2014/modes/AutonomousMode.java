@@ -35,7 +35,7 @@ public class AutonomousMode extends Procedure {
         add("Align", new Step(new TriggerMeasure(modules.getModule("Drive").getTrigger("At Servo Target")), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 bind(modules.getModule("Drive").getAction("Servo"));
-                wire(modules.getModule("Drive").getAction("Servo"), "clicks", 1400);
+                wire(modules.getModule("Drive").getAction("Servo").getField("clicks"), 1400);
             }
         }));
         
@@ -50,7 +50,7 @@ public class AutonomousMode extends Procedure {
         
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                wire(modules.getModule("Drive").getAction("Servo"), "clicks", 1700);
+                wire(modules.getModule("Drive").getAction("Servo").getField("clicks"), 1700);
                 bind(modules.getModule("Shooter").getAction("Deploy"), true);
             }
         }));

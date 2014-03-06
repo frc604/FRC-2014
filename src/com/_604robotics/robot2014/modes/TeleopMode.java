@@ -53,22 +53,22 @@ public class TeleopMode extends Coordinator {
             /* Drive */
             {
                 bind(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive"));
-                wire(modules.getModule("Drive").getAction("Tank Drive"), "left",  driver.leftStick.Y);
-                wire(modules.getModule("Drive").getAction("Tank Drive"), "right", driver.rightStick.Y);
+                wire(modules.getModule("Drive").getAction("Tank Drive").getField("left"),  driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Tank Drive").getField("right"), driver.rightStick.Y);
                 
                 //fill(modules.getModule("Drive").getAction("Tank Drive"), "left", leftDrive.axisY);
                 //fill(modules.getModule("Drive").getAction("Tank Drive"), "right", rightDrive.axisY);
                 
                 bind(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive"));
-                wire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driver.leftStick.Y);
-                wire(modules.getModule("Drive").getAction("Arcade Drive"), "turn",     driver.rightStick.X);
+                wire(modules.getModule("Drive").getAction("Arcade Drive").getField("throttle"), driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Arcade Drive").getField("turn"),     driver.rightStick.X);
                 
                 //fill(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", rightDrive.axisY);
                 //fill(modules.getModule("Drive").getAction("Arcade Drive"), "turn", leftDrive.axisX);
                 
                 bind(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive"));
-                wire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driver.leftStick.Y);
-                wire(modules.getModule("Drive").getAction("Stick Drive"), "turn",     driver.rightStick.X);
+                wire(modules.getModule("Drive").getAction("Stick Drive").getField("throttle"), driver.leftStick.Y);
+                wire(modules.getModule("Drive").getAction("Stick Drive").getField("turn"),     driver.rightStick.X);
                 
                 //fill(modules.getModule("Drive").getAction("Stick Drive"), "throttle", leftDrive.axisY);
                 //fill(modules.getModule("Drive").getAction("Stick Drive"), "turn", leftDrive.axisX);
@@ -97,7 +97,7 @@ public class TeleopMode extends Coordinator {
             {
                 /* Manual Operation */
                 {
-                    wire(modules.getModule("Rotation").getAction("Manual"), "power", manipulator.axisY);
+                    wire(modules.getModule("Rotation").getAction("Manual").getField("power"), manipulator.axisY);
                 
                     bind(modules.getModule("Rotation").getAction("Hold"),         manipulator.buttons.Button9);
                     bind(modules.getModule("Rotation").getAction("Manual Angle"), manipulator.buttons.Button11);

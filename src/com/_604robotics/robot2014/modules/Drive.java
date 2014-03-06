@@ -1,10 +1,10 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
-import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.ElasticController;
-import com._604robotics.robotnik.action.field.FieldMap;
+import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.data.Data;
+import com._604robotics.robotnik.data.DataAccess;
 import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
@@ -94,69 +94,70 @@ public class Drive extends Module {
         
         this.set(new ElasticController() {{
             addDefault("Off", new Action() {
-                public void run (ActionData data) {
+                public void run () {
                     drive.tankDrive(0D, 0D);
                 }
             });
             
-            add("Arcade Drive", new Action(new FieldMap () {{
-                define("throttle", 0D);
-                define("turn", 0D);
-            }}) {
-                public void run (ActionData data) {
-                    drive.arcadeDrive(data.get("throttle"), data.get("turn"));
+            add("Arcade Drive", new Action() {
+                private final Field throttle = field("throttle", 0D);
+                private final Field turn     = field("turn",     0D);
+                
+                public void run () {
+                    drive.arcadeDrive(throttle.value(), turn.value());
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     drive.stopMotor();
                 }
             });
             
-            add("Tank Drive", new Action(new FieldMap () {{
-                define("left", 0D);
-                define("right", 0D);
-            }}) {
-                public void run (ActionData data) {
-                    drive.tankDrive(data.get("left"), data.get("right"));
+            add("Tank Drive", new Action() {
+                private final Field left  = field("left",  0D);
+                private final Field right = field("right", 0D);
+                
+                public void run () {
+                    drive.tankDrive(left.value(), right.value());
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     drive.stopMotor();
                 }
             });
             
-            add("Stick Drive", new Action(new FieldMap () {{
-                define("throttle", 0D);
-                define("turn", 0D);
-            }}) {
-                public void run (ActionData data) {
-                    drive.arcadeDrive(data.get("throttle"), data.get("turn"));
+            add("Stick Drive", new Action() {
+                private final Field throttle = field("throttle", 0D);
+                private final Field turn     = field("turn",     0D);
+                
+                public void run () {
+                    drive.arcadeDrive(throttle.value(), turn.value());
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     drive.stopMotor();
                 }
             });
             
-            add("Servo", new Action(new FieldMap() {{
-                define("clicks", 0D);
-            }}) {
-                public void begin (ActionData data) {
-                    pid.setSetpoint(data.get("clicks") + data.data("Left Drive Clicks"));
+            add("Servo", new Action() {
+                private final Field clicks = field("clicks", 0D);
+                private final DataAccess leftClicks = data("Left Drive Clicks");
+                
+                public void begin () {
+                    pid.setSetpoint(clicks.value() + leftClicks.get());
                     pid.enable();
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     pid.reset();
                 }
             });
             
             add("Forward", new Action() {
-                public void run (ActionData data) {
+                public void run () {
                     drive.setLeftRightMotorOutputs(1.0, 1.0);
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     drive.stopMotor();
                 }
             });

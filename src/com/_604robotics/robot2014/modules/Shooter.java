@@ -1,7 +1,6 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
-import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
@@ -36,44 +35,44 @@ public class Shooter extends Module {
     	
         this.set(new ElasticController () {{
             addDefault("Idle", new Action() {
-                public void begin(ActionData data) {
+                public void begin() {
                     release.set(false);
                 }
 
-                public void run(ActionData data) {
+                public void run() {
                     winch.stopMotor();
                 }
             });
             
             add("Retract", new Action() {
-                public void begin (ActionData data) {
+                public void begin () {
                     release.set(false);
                 }
 
-                public void run (ActionData data) {
+                public void run () {
                     retract();
                 }
 
-                public void end (ActionData data) {
+                public void end () {
                     winch.stopMotor();
                 }
             });
             
             add("Deploy", new Action() {
-                public void begin (ActionData data) {
+                public void begin () {
                     release.set(true);
                     
                     deployTimer.start();
                 }
 
-                public void run (ActionData data) {
+                public void run () {
                     if (deployTimer.get() > 0.75)
                         retract();
                     else
                         winch.stopMotor();
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     release.set(false);
                     
                     deployTimer.stop();

@@ -1,10 +1,10 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
-import com._604robotics.robotnik.action.ActionData;
+import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.action.controllers.ElasticController;
-import com._604robotics.robotnik.action.field.FieldMap;
 import com._604robotics.robotnik.data.Data;
+import com._604robotics.robotnik.data.DataAccess;
 import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.prefabs.devices.MA3A10;
@@ -68,14 +68,14 @@ public class Rotation extends Module {
         }});
         
         this.set(new ElasticController() {{
-            addDefault("Manual", new Action(new FieldMap() {{
-                define("power", 0D);
-            }}) {
-                public void run (ActionData data) {
-                    motor.set(data.get("power"));
+            addDefault("Manual", new Action() {
+                private final Field power = field("power", 0D);
+                
+                public void run () {
+                    motor.set(power.value());
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     motor.stopMotor();
                 }
             });
@@ -88,12 +88,14 @@ public class Rotation extends Module {
             add("Truss",  new AngleAction());
             
             add("Hold", new Action() {
-                public void begin (ActionData data) {
-                    pid.setSetpoint(data.data("Encoder Angle"));
+                private final DataAccess angle = data("Encoder Angle");
+                
+                public void begin () {
+                    pid.setSetpoint(angle.get());
                     pid.enable();
                 }
                 
-                public void end (ActionData data) {
+                public void end () {
                     pid.reset();
                 }
             });
@@ -101,25 +103,20 @@ public class Rotation extends Module {
     }
     
     private class AngleAction extends Action {
-        public AngleAction () {
-            super(new FieldMap() {{
-                define("angle", 0D);
-            }});
-        }
-
-        public void begin(ActionData data) {
-            pid.setSetpoint(data.get("angle"));
+        private final Field angle = field("angle", 0D);
+        
+        public void begin() {
+            pid.setSetpoint(angle.value());
             pid.enable();
         }
 
-        public void run(ActionData data) {
-            final double setpoint = data.get("angle");
-            if (setpoint != pid.getSetpoint()) {
+        public void run() {
+            final double setpoint = angle.value();
+            if (setpoint != pid.getSetpoint())
                 pid.setSetpoint(setpoint);
-            }
         }
 
-        public void end(ActionData data) {
+        public void end() {
             pid.reset();
         }
     }
