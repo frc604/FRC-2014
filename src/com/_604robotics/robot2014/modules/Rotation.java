@@ -2,24 +2,29 @@ package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
-import com._604robotics.robotnik.action.controllers.StateController;
+import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.action.field.FieldMap;
 import com._604robotics.robotnik.data.Data;
 import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.prefabs.devices.MA3A10;
+import com._604robotics.robotnik.trigger.Trigger;
+import com._604robotics.robotnik.trigger.TriggerMap;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Rotation extends Module {
-    private final MA3A10 encoder = new MA3A10(2, 1);
+    private final MA3A10 encoder = new MA3A10(1, 1);
     private final Victor motor = new Victor(3);
     
-    private final PIDController pid = new PIDController(-0.05, 0, 0, encoder, motor);
+    private final PIDController pid = new PIDController(-0.025, 0, -0.025, encoder, motor);
             
     public Rotation () {
         SmartDashboard.putData("Rotation PID", pid);
+        
+        pid.setAbsoluteTolerance(4);
         
         this.set(new DataMap() {{
             add("Encoder Ticks", new Data() {
@@ -35,8 +40,35 @@ public class Rotation extends Module {
             });
         }});
         
-        this.set(new StateController() {{
-            add("Manual", new Action(new FieldMap() {{
+        this.set(new TriggerMap() {{
+            add("At Angle Target", new Trigger() {
+                private final Timer timer = new Timer();
+                private boolean timing = false;
+                
+                public boolean run () {
+                    if (pid.isEnable() && pid.onTarget()) {
+                        if (!timing) {
+                            timing = true;
+                            timer.start();
+                        }
+                        
+                        return timer.get() >= 0.25;
+                    } else {
+                        if (timing) {
+                            timing = false;
+                            
+                            timer.stop();
+                            timer.reset();
+                        }
+                        
+                        return false;
+                    }
+                }
+            });
+        }});
+        
+        this.set(new ElasticController() {{
+            addDefault("Manual", new Action(new FieldMap() {{
                 define("power", 0D);
             }}) {
                 public void run (ActionData data) {
@@ -48,41 +80,43 @@ public class Rotation extends Module {
                 }
             });
             
-            add("Manual Angle", new Action(new FieldMap() {{
-                define("setpoint", 0D);
-            }}) {
+            add("Manual Angle", new AngleAction());
+            
+            add("Stow",   new AngleAction());
+            add("Shoot",  new AngleAction());
+            add("Ground", new AngleAction());
+            add("Truss",  new AngleAction());
+            
+            add("Hold", new Action() {
                 public void begin (ActionData data) {
-                    pid.setSetpoint(data.get("setpoint"));
+                    pid.setSetpoint(data.data("Encoder Angle"));
                     pid.enable();
-                }
-                
-                public void run (ActionData data) {
-                    final double setpoint = data.get("setpoint");
-                    if (setpoint != pid.getSetpoint())
-                        pid.setSetpoint(setpoint);
                 }
                 
                 public void end (ActionData data) {
                     pid.reset();
                 }
             });
-            
-            addDefault("Stow", new AngleAction(215D));
-            add("Shoot", new AngleAction(180D));
-            add("Pickup", new AngleAction(108D));
         }});
     }
     
     private class AngleAction extends Action {
-        private final double angle;
-        
-        public AngleAction (double angle) {
-            this.angle = angle;
+        public AngleAction () {
+            super(new FieldMap() {{
+                define("angle", 0D);
+            }});
         }
-        
+
         public void begin(ActionData data) {
-            pid.setSetpoint(angle);
+            pid.setSetpoint(data.get("angle"));
             pid.enable();
+        }
+
+        public void run(ActionData data) {
+            final double setpoint = data.get("angle");
+            if (setpoint != pid.getSetpoint()) {
+                pid.setSetpoint(setpoint);
+            }
         }
 
         public void end(ActionData data) {

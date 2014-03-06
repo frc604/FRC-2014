@@ -10,8 +10,8 @@ import com._604robotics.robot2014.modules.Regulator;
 import com._604robotics.robot2014.modules.Rotation;
 import com._604robotics.robot2014.modules.Shifter;
 import com._604robotics.robot2014.modules.Shooter;
+import com._604robotics.robot2014.modules.Vision;
 import com._604robotics.robot2014.systems.DashboardSystem;
-import com._604robotics.robot2014.systems.FlowerSystem;
 import com._604robotics.robot2014.systems.ShootingSystem;
 import com._604robotics.robotnik.Robot;
 import com._604robotics.robotnik.coordinator.CoordinatorList;
@@ -22,6 +22,7 @@ public class Robot2014 extends Robot {
     public Robot2014 () {
         this.set(new ModuleMap() {{
             add("Dashboard", new Dashboard());
+            add("Vision", new Vision());
             add("Drive", new Drive());
             add("Regulator", new Regulator());
             add("Shifter", new Shifter());
@@ -39,7 +40,6 @@ public class Robot2014 extends Robot {
         this.set(new CoordinatorList() {{
             add(new DashboardSystem());
             add(new ShootingSystem());
-            add(new FlowerSystem());
         }});
     }
 }

@@ -13,7 +13,7 @@ public class Intake extends Module {
         this.set(new ElasticController() {{
             addDefault("Off", new Action() {
                 public void run(ActionData data) {
-                    motor.set(0D);
+                    motor.stopMotor();
                 }
             });
 
@@ -23,7 +23,7 @@ public class Intake extends Module {
                 }
 
                 public void end(ActionData data) {
-                    motor.set(0D);
+                    motor.stopMotor();
                 }
             });
         }});
