@@ -28,7 +28,5 @@ public class DashboardSystem extends Coordinator {
                 "angle", modules.getModule("Dashboard").getData("Shoot Angle")));
         this.fill(new DataWire(modules.getModule("Rotation").getAction("Ground"),
                 "angle", modules.getModule("Dashboard").getData("Ground Angle")));
-        this.fill(new DataWire(modules.getModule("Rotation").getAction("Truss"),
-                "angle", modules.getModule("Dashboard").getData("Truss Angle")));
     }
 }

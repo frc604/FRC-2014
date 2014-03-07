@@ -9,12 +9,11 @@ import com._604robotics.robotnik.trigger.sources.DashboardTriggerChoice;
 public class Dashboard extends Module {
     public Dashboard () {
         this.set(new DataMap() {{
-            add("Manual Angle", new DashboardData("Manual Angle", 180D));
+            add("Manual Angle", new DashboardData("Manual Angle", 157D));
             
-            add("Stow Angle"  , new DashboardData("Stow Angle"  , 223D));
-            add("Shoot Angle" , new DashboardData("Shoot Angle" , 184D));
-            add("Ground Angle", new DashboardData("Ground Angle", 110D));
-            add("Truss Angle" , new DashboardData("Truss Angle" , 204D));
+            add("Stow Angle"  , new DashboardData("Stow Angle"  , 205D));
+            add("Shoot Angle" , new DashboardData("Shoot Angle" , 163D));
+            add("Ground Angle", new DashboardData("Ground Angle", 96D));
         }});
         
         this.set(new TriggerMap() {{

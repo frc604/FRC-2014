@@ -85,7 +85,6 @@ public class Rotation extends Module {
             add("Stow",   new AngleAction());
             add("Shoot",  new AngleAction());
             add("Ground", new AngleAction());
-            add("Truss",  new AngleAction());
             
             add("Hold", new Action() {
                 public void begin (ActionData data) {

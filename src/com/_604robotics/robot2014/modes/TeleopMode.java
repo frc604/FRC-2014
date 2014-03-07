@@ -15,7 +15,7 @@ import com._604robotics.robotnik.trigger.TriggerAccess;
 
 public class TeleopMode extends Coordinator {
     //private final JoystickController leftDrive  = new JoystickController(1);
-    //private final JoystickController rightDrive = new JoystickController(2);
+    //private final JoystickController rightDrive = new JgoystickController(2);
     
     private final XboxController     driver = new XboxController(1);
     private final JoystickController manipulator = new JoystickController(3);
@@ -139,27 +139,6 @@ public class TeleopMode extends Coordinator {
             /* Intake */
             {
                 this.bind(new Binding(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button2));
-            }
-            
-            /* Truss Macro */
-            {
-                this.group(new Group(driver.buttons.LB, new Coordinator() {
-                    protected void apply(ModuleManager modules) {
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Truss"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not()));
-                        
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"),
-                                modules.getModule("Shooter").getTrigger("Deployed")));
-                        
-                        this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"),
-                                modules.getModule("Shooter").getAction("Deploy").active(), true));
-                        
-                        this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not()));
-                        this.bind(new Binding(modules.getModule("Flower").getAction("Open"),
-                                modules.getModule("Shooter").getTrigger("Deployed")));
-                    }
-                }));
             }
         }
     }

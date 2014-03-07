@@ -29,7 +29,7 @@ public class Shooter extends Module {
             
             add("Deployed", new Trigger() {
                 public boolean run() {
-                    return deployTimer.get() > 0.5;
+                    return deployTimer.get() > 1;
                 }
             });
     	}});
@@ -51,7 +51,11 @@ public class Shooter extends Module {
                 }
 
                 public void run (ActionData data) {
-                    retract();
+                    release.set(false);
+                    if (limitSwitch.get())
+                        winch.set(-1D);
+                    else
+                        winch.stopMotor();
                 }
 
                 public void end (ActionData data) {
@@ -67,10 +71,7 @@ public class Shooter extends Module {
                 }
 
                 public void run (ActionData data) {
-                    if (deployTimer.get() > 0.75)
-                        retract();
-                    else
-                        winch.stopMotor();
+                    winch.stopMotor();
                 }
                 
                 public void end (ActionData data) {
@@ -81,13 +82,5 @@ public class Shooter extends Module {
                 }
             });
         }});
-    }
-    
-    private void retract () {
-        release.set(false);
-        if (limitSwitch.get())
-            winch.set(-1D);
-        else
-            winch.stopMotor();
     }
 }
