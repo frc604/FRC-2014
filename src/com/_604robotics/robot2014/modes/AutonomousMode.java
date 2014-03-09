@@ -14,7 +14,6 @@ public class AutonomousMode extends Procedure {
     public AutonomousMode () {
         super(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
                 this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
                 
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
@@ -34,10 +33,13 @@ public class AutonomousMode extends Procedure {
             }
         }));
         
-        add("Align", new Step(new TriggerMeasure(modules.getModule("Drive").getTrigger("At Servo Target")), new Coordinator() {
+        add("Align", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
+            modules.getModule("Drive").getTrigger("At Servo Target"),
+            modules.getModule("Shooter").getTrigger("Charged")
+        })), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Drive").getAction("Servo")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1500));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1663));
             }
         }));
         
@@ -45,16 +47,22 @@ public class AutonomousMode extends Procedure {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Vision").getAction("Pause")));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
             }
         }));
         
         add("Aim", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
             modules.getModule("Rotation").getTrigger("At Angle Target"),
             modules.getModule("Flower").getTrigger("Travelling").not()
-        }))));
+        })), new Coordinator() {
+            protected void apply (ModuleManager modules) {
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
+            }
+        }));
         
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
             }
         }));

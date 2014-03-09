@@ -51,7 +51,7 @@ public class Vision extends Module {
                 }
                 
                 public void run (ActionData data) {
-                    if (timer.get() > 1) {
+                    if (timer.get() > 1.5) {
                         state = PAUSING;
                     } else {
                         leftTarget  = data.trigger("Left Target");

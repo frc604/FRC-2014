@@ -20,7 +20,7 @@ public class Flower extends Module {
         this.set(new TriggerMap() {{
             add("Travelling", new Trigger() {
                 public boolean run () {
-                    return travelTimer.get() < 1;
+                    return travelTimer.get() < 0.6;
                 }
             });
         }});

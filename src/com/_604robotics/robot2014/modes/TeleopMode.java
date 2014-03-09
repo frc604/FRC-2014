@@ -3,7 +3,6 @@ package com._604robotics.robot2014.modes;
 import com._604robotics.robotnik.coordinator.Coordinator;
 import com._604robotics.robotnik.coordinator.connectors.Binding;
 import com._604robotics.robotnik.coordinator.connectors.DataWire;
-import com._604robotics.robotnik.coordinator.connectors.Group;
 import com._604robotics.robotnik.module.ModuleManager;
 import com._604robotics.robotnik.prefabs.controller.joystick.JoystickController;
 import com._604robotics.robotnik.prefabs.controller.xbox.XboxController;
