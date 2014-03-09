@@ -7,6 +7,9 @@ import com._604robotics.robotnik.prefabs.outputs.DashboardOutput;
 
 public class DashboardSystem extends Coordinator {
     protected void apply (ModuleManager modules) {
+        this.fill(new DataWire(DashboardOutput.asDouble(), "armBaseAngle",
+                modules.getModule("Rotation").getData("Base Angle")));
+        
         this.fill(new DataWire(DashboardOutput.asDouble(),  "currentAngle",
                 modules.getModule("Rotation").getData("Encoder Angle")));
         this.fill(new DataWire(DashboardOutput.asBoolean(), "compressorCharged",

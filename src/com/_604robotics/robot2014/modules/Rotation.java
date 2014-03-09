@@ -20,6 +20,8 @@ public class Rotation extends Module {
     private final Victor motor = new Victor(3);
     
     private final PIDController pid = new PIDController(-0.025, 0, -0.025, encoder, motor);
+    
+    private double baseAngle = 185D;
             
     public Rotation () {
         SmartDashboard.putData("Rotation PID", pid);
@@ -27,6 +29,12 @@ public class Rotation extends Module {
         pid.setAbsoluteTolerance(4);
         
         this.set(new DataMap() {{
+            add("Base Angle", new Data() {
+                public double run () {
+                    return baseAngle;
+                }
+            });
+            
             add("Encoder Ticks", new Data() {
                 public double run () {
                     return encoder.getRaw();
@@ -70,9 +78,12 @@ public class Rotation extends Module {
         this.set(new ElasticController() {{
             addDefault("Manual", new Action(new FieldMap() {{
                 define("power", 0D);
+                define("calibrate", false);
             }}) {
                 public void run (ActionData data) {
                     motor.set(data.get("power"));
+                    if (data.is("calibrate"))
+                        baseAngle = encoder.getAngle();
                 }
                 
                 public void end (ActionData data) {
@@ -107,12 +118,12 @@ public class Rotation extends Module {
         }
 
         public void begin(ActionData data) {
-            pid.setSetpoint(data.get("angle"));
+            pid.setSetpoint(baseAngle + data.get("angle"));
             pid.enable();
         }
 
         public void run(ActionData data) {
-            final double setpoint = data.get("angle");
+            final double setpoint = baseAngle + data.get("angle");
             if (setpoint != pid.getSetpoint()) {
                 pid.setSetpoint(setpoint);
             }

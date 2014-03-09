@@ -99,7 +99,8 @@ public class TeleopMode extends Coordinator {
             {
                 /* Manual Operation */
                 {
-                    this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "power", manipulator.axisY));
+                    this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "power",     manipulator.axisY));
+                    this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "calibrate", driver.buttons.Back));
                 
                     this.bind(new Binding(modules.getModule("Rotation").getAction("Hold"),         manipulator.buttons.Button9));
                     this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle"), manipulator.buttons.Button11));
