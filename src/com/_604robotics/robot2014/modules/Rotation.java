@@ -1,5 +1,6 @@
 package com._604robotics.robot2014.modules;
 
+import com._604robotics.robot2014.utils.AntiWindupPIDController;
 import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.ElasticController;
@@ -10,7 +11,6 @@ import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.prefabs.devices.MA3A10;
 import com._604robotics.robotnik.trigger.Trigger;
 import com._604robotics.robotnik.trigger.TriggerMap;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,7 +19,7 @@ public class Rotation extends Module {
     private final MA3A10 encoder = new MA3A10(1, 1);
     private final Victor motor = new Victor(3);
     
-    private final PIDController pid = new PIDController(-0.025, 0, -0.025, encoder, motor);
+    private final AntiWindupPIDController pid = new AntiWindupPIDController(-0.025, 0, Double.MAX_VALUE, 1, -0.025, encoder, motor);
     
     private double baseAngle = 185D;
             
