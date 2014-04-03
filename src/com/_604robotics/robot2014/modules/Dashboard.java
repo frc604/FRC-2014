@@ -1,10 +1,10 @@
 package com._604robotics.robot2014.modules;
 
 import com._604robotics.robotnik.data.DataMap;
-import com._604robotics.robotnik.data.sources.DashboardData;
+import com._604robotics.robotnik.prefabs.data.sources.DashboardData;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.TriggerMap;
-import com._604robotics.robotnik.trigger.sources.DashboardTriggerChoice;
+import com._604robotics.robotnik.prefabs.trigger.sources.DashboardTriggerChoice;
 
 public class Dashboard extends Module {
     public Dashboard () {

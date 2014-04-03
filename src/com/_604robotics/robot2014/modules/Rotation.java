@@ -4,7 +4,7 @@ import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.data.Data;
-import com._604robotics.robotnik.data.DataAccess;
+import com._604robotics.robotnik.data.DataSource;
 import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.prefabs.devices.MA3A10;
@@ -88,7 +88,7 @@ public class Rotation extends Module {
             add("Truss",  new AngleAction());
             
             add("Hold", new Action() {
-                private final DataAccess angle = data("Encoder Angle");
+                private final DataSource angle = data("Encoder Angle");
                 
                 public void begin () {
                     pid.setSetpoint(angle.get());

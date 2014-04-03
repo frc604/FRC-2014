@@ -5,9 +5,9 @@ import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
-import com._604robotics.robotnik.trigger.TriggerAccess;
+import com._604robotics.robotnik.trigger.TriggerSource;
 import com._604robotics.robotnik.trigger.TriggerMap;
-import com._604robotics.robotnik.trigger.sources.NetworkTrigger;
+import com._604robotics.robotnik.prefabs.trigger.sources.NetworkTrigger;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -43,8 +43,8 @@ public class Vision extends Module {
             addDefault("Idle");
             
             add("Snap", new Action() {
-                private final TriggerAccess leftTarget  = trigger("Left Target");
-                private final TriggerAccess rightTarget = trigger("Right Target");
+                private final TriggerSource leftTarget  = trigger("Left Target");
+                private final TriggerSource rightTarget = trigger("Right Target");
                 
                 private final Timer timer = new Timer();
                 
@@ -91,7 +91,7 @@ public class Vision extends Module {
         }});
     }
     
-    protected void start () {
+    protected void begin () {
         state = SNAPPING;
     }
 }

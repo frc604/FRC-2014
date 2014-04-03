@@ -8,7 +8,7 @@ import com._604robotics.robotnik.prefabs.trigger.TriggerAnd;
 import com._604robotics.robotnik.prefabs.trigger.TriggerNot;
 import com._604robotics.robotnik.prefabs.trigger.TriggerOr;
 import com._604robotics.robotnik.prefabs.trigger.TriggerToggle;
-import com._604robotics.robotnik.trigger.TriggerAccess;
+import com._604robotics.robotnik.trigger.TriggerSource;
 
 public class TeleopMode extends Coordinator {
     //private final JoystickController leftDrive  = new JoystickController(1);
@@ -76,7 +76,7 @@ public class TeleopMode extends Coordinator {
             
             /* Shifter */
             {
-                final TriggerToggle toggle = new TriggerToggle(new TriggerOr(new TriggerAccess[] {
+                final TriggerToggle toggle = new TriggerToggle(new TriggerOr(new TriggerSource[] {
                     driver.buttons.RB
                     //leftDrive.buttons.Button1, rightDrive.buttons.Button1
                 }), true);
@@ -105,18 +105,18 @@ public class TeleopMode extends Coordinator {
                 
                 /* Rotation Presets */
                 {
-                    final TriggerAccess rotationEnabled = new TriggerNot(manipulator.buttons.Button10);
+                    final TriggerSource rotationEnabled = new TriggerNot(manipulator.buttons.Button10);
 
-                    bind(modules.getModule("Rotation").getAction("Ground"), new TriggerAnd(new TriggerAccess[] {
-                        new TriggerOr(new TriggerAccess[] {
+                    bind(modules.getModule("Rotation").getAction("Ground"), new TriggerAnd(new TriggerSource[] {
+                        new TriggerOr(new TriggerSource[] {
                             manipulator.buttons.Button2, manipulator.buttons.Button8,
                         }), rotationEnabled
                     }));
 
-                    bind(modules.getModule("Rotation").getAction("Shoot"), new TriggerAnd(new TriggerAccess[] {
+                    bind(modules.getModule("Rotation").getAction("Shoot"), new TriggerAnd(new TriggerSource[] {
                         manipulator.buttons.Button3, rotationEnabled
                     }));
-                    bind(modules.getModule("Rotation").getAction("Stow"), new TriggerAnd(new TriggerAccess[] {
+                    bind(modules.getModule("Rotation").getAction("Stow"), new TriggerAnd(new TriggerSource[] {
                         manipulator.buttons.Button6, rotationEnabled
                     }));
                 }
@@ -124,11 +124,11 @@ public class TeleopMode extends Coordinator {
             
             /* Flower */
             {
-                bind(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4, true);
+                bind(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4);
                 bind(modules.getModule("Flower").getAction("Open"),   manipulator.buttons.Button5);
                 bind(modules.getModule("Flower").getAction("Pickup"), manipulator.buttons.Button2);
                 bind(modules.getModule("Flower").getAction("Drop"),   manipulator.buttons.Button8);
-                bind(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerAccess[] {
+                bind(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerSource[] {
                     manipulator.buttons.Button3, manipulator.buttons.Button11
                 }));
             }
@@ -136,27 +136,6 @@ public class TeleopMode extends Coordinator {
             /* Intake */
             {
                 bind(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button2);
-            }
-            
-            /* Truss Macro */
-            {
-                group(driver.buttons.LB, new Coordinator() {
-                    protected void apply(ModuleManager modules) {
-                        bind(modules.getModule("Rotation").getAction("Truss"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not());
-                        
-                        bind(modules.getModule("Rotation").getAction("Stow"),
-                                modules.getModule("Shooter").getTrigger("Deployed"));
-                        
-                        bind(modules.getModule("Shooter").getAction("Deploy"),
-                                modules.getModule("Shooter").getAction("Deploy").active(), true);
-                        
-                        bind(modules.getModule("Flower").getAction("Shoot"),
-                                modules.getModule("Shooter").getTrigger("Deployed").not());
-                        bind(modules.getModule("Flower").getAction("Open"),
-                                modules.getModule("Shooter").getTrigger("Deployed"));
-                    }
-                });
             }
         }
     }

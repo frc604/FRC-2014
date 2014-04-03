@@ -4,7 +4,7 @@ import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.controllers.ElasticController;
 import com._604robotics.robotnik.action.Field;
 import com._604robotics.robotnik.data.Data;
-import com._604robotics.robotnik.data.DataAccess;
+import com._604robotics.robotnik.data.DataSource;
 import com._604robotics.robotnik.data.DataMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
@@ -140,7 +140,7 @@ public class Drive extends Module {
             
             add("Servo", new Action() {
                 private final Field clicks = field("clicks", 0D);
-                private final DataAccess leftClicks = data("Left Drive Clicks");
+                private final DataSource leftClicks = data("Left Drive Clicks");
                 
                 public void begin () {
                     pid.setSetpoint(clicks.value() + leftClicks.get());
