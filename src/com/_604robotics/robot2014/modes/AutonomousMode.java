@@ -17,7 +17,7 @@ public class AutonomousMode extends Procedure {
                 this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
                 
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
-                this.bind(new Binding(modules.getModule("Intake").getAction("On"), new TriggerAnd(new TriggerAccess[] {
+                this.bind(new Binding(modules.getModule("Intake").getAction("Suck"), new TriggerAnd(new TriggerAccess[] {
                     modules.getModule("Shooter").getTrigger("Charged"),
                     modules.getModule("Shooter").getTrigger("Deployed").not()
                 })));
@@ -26,28 +26,21 @@ public class AutonomousMode extends Procedure {
     }
     
     protected void apply (ModuleManager modules) {
-        add("Snap", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Snapped")), new Coordinator() {
-            protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Flower").getAction("Close")));
-                this.bind(new Binding(modules.getModule("Vision").getAction("Snap")));
-            }
-        }));
-        
         add("Align", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
             modules.getModule("Drive").getTrigger("At Servo Target"),
             modules.getModule("Shooter").getTrigger("Charged")
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
+                this.bind(new Binding(modules.getModule("Flower").getAction("Close")));
+                
                 this.bind(new Binding(modules.getModule("Drive").getAction("Servo")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1663));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1963));
             }
         }));
         
         add("Pause", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Ready")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Vision").getAction("Pause")));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
             }
         }));
         
@@ -56,13 +49,14 @@ public class AutonomousMode extends Procedure {
             modules.getModule("Flower").getTrigger("Travelling").not()
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
+                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
             }
         }));
         
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
             }
         }));

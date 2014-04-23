@@ -102,8 +102,7 @@ public class TeleopMode extends Coordinator {
                     this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "power",     manipulator.axisY));
                     this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "calibrate", driver.buttons.Back));
                 
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Hold"),         manipulator.buttons.Button9));
-                    this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle"), manipulator.buttons.Button11));
+                    this.bind(new Binding(modules.getModule("Rotation").getAction("Hold"), manipulator.buttons.Button9));
                 }
                 
                 /* Rotation Presets */
@@ -111,13 +110,14 @@ public class TeleopMode extends Coordinator {
                     final TriggerAccess rotationEnabled = new TriggerNot(manipulator.buttons.Button10);
 
                     this.bind(new Binding(modules.getModule("Rotation").getAction("Ground"), new TriggerAnd(new TriggerAccess[] {
-                        new TriggerOr(new TriggerAccess[] {
-                            manipulator.buttons.Button2, manipulator.buttons.Button8,
-                        }), rotationEnabled
+                        manipulator.buttons.Button2, rotationEnabled
                     })));
 
                     this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot"), new TriggerAnd(new TriggerAccess[] {
                         manipulator.buttons.Button3, rotationEnabled
+                    })));
+                    this.bind(new Binding(modules.getModule("Rotation").getAction("Close"), new TriggerAnd(new TriggerAccess[] {
+                        manipulator.buttons.Button11, rotationEnabled
                     })));
                     this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"), new TriggerAnd(new TriggerAccess[] {
                         manipulator.buttons.Button6, rotationEnabled
@@ -127,18 +127,21 @@ public class TeleopMode extends Coordinator {
             
             /* Flower */
             {
-                this.bind(new Binding(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4, true));
+                this.bind(new Binding(modules.getModule("Flower").getAction("Close"),  new TriggerOr(new TriggerAccess[] {
+                    manipulator.buttons.Button4, manipulator.buttons.Button11
+                })));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Open"),   manipulator.buttons.Button5));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Pickup"), manipulator.buttons.Button2));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Drop"),   manipulator.buttons.Button8));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerAccess[] {
-                    manipulator.buttons.Button3, manipulator.buttons.Button11
+                    manipulator.buttons.Button3
                 })));
             }
             
             /* Intake */
             {
-                this.bind(new Binding(modules.getModule("Intake").getAction("On"), manipulator.buttons.Button2));
+                this.bind(new Binding(modules.getModule("Intake").getAction("Suck"), manipulator.buttons.Button2));
+                this.bind(new Binding(modules.getModule("Intake").getAction("Spit"), manipulator.buttons.Button8));
             }
         }
     }

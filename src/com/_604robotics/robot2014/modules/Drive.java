@@ -10,24 +10,26 @@ import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
 import com._604robotics.robotnik.trigger.TriggerMap;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Module {
-    private final RobotDrive drive = new RobotDrive(2, 1);
+    // These are actually Talons, but they work better when controlled by the
+    // Jaguar class.
+    private final Jaguar leftMotor = new Jaguar(2); 
+    private final Jaguar rightMotor = new Jaguar(1);
+    
+    private final RobotDrive drive = new RobotDrive(leftMotor, rightMotor);
     
     private final Encoder leftEncoder = new Encoder(2, 1);
     private final Encoder rightEncoder = new Encoder(3, 4);
     
-    private final PIDController pid = new PIDController(0.005, 0D, 0.005, leftEncoder, new PIDOutput () {
-        public void pidWrite (double output) {
-            drive.setLeftRightMotorOutputs(output, output);
-        }
-    });
+    private final PIDController leftPID = new PIDController(0.005, 0D, 0.005, leftEncoder, leftMotor);
+    private final PIDController rightPID = new PIDController(-0.005, 0D, -0.005, rightEncoder, rightMotor);
     
     public Drive () {
         leftEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
@@ -36,8 +38,11 @@ public class Drive extends Module {
         leftEncoder.start();
         rightEncoder.start();
         
-        pid.setAbsoluteTolerance(25);
-        SmartDashboard.putData("Drive PID", pid);
+        leftPID.setAbsoluteTolerance(25);
+        rightPID.setAbsoluteTolerance(25);
+        
+        SmartDashboard.putData("Left Drive PID", leftPID);
+        SmartDashboard.putData("Right Drive PID", rightPID);
         
         this.set(new DataMap() {{
             add("Left Drive Clicks", new Data() {
@@ -71,7 +76,8 @@ public class Drive extends Module {
                 private boolean timing = false;
                 
                 public boolean run () {
-                    if (pid.isEnable() && pid.onTarget()) {
+                    if (leftPID.isEnable() && rightPID.isEnable()
+                     && leftPID.onTarget() && rightPID.onTarget()) {
                         if (!timing) {
                             timing = true;
                             timer.start();
@@ -142,12 +148,20 @@ public class Drive extends Module {
                 define("clicks", 0D);
             }}) {
                 public void begin (ActionData data) {
-                    pid.setSetpoint(data.get("clicks") + data.data("Left Drive Clicks"));
-                    pid.enable();
+                    drive.setSafetyEnabled(false);
+                    
+                    leftPID.setSetpoint(data.get("clicks") + data.data("Left Drive Clicks"));
+                    rightPID.setSetpoint(data.get("clicks") + data.data("Right Drive Clicks"));
+                    
+                    leftPID.enable();
+                    rightPID.enable();
                 }
                 
                 public void end (ActionData data) {
-                    pid.reset();
+                    leftPID.reset();
+                    rightPID.reset();
+                    
+                    drive.setSafetyEnabled(true);
                 }
             });
             

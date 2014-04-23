@@ -9,11 +9,10 @@ import com._604robotics.robotnik.trigger.sources.DashboardTriggerChoice;
 public class Dashboard extends Module {
     public Dashboard () {
         this.set(new DataMap() {{
-            add("Manual Angle", new DashboardData("Manual Angle", -50D));
-            
             add("Stow Angle"  , new DashboardData("Stow Angle", 0D));
-            add("Shoot Angle" , new DashboardData("Shoot Angle", -50D));
-            add("Ground Angle", new DashboardData("Ground Angle", -108D));
+            add("Shoot Angle" , new DashboardData("Shoot Angle", -54D));
+            add("Close Angle", new DashboardData("Close Angle", -17D));
+            add("Ground Angle", new DashboardData("Ground Angle", -109D));
         }});
         
         this.set(new TriggerMap() {{
@@ -21,10 +20,6 @@ public class Dashboard extends Module {
             add("Tank Drive", driveMode.addDefault("Tank Drive"));
             add("Arcade Drive", driveMode.add("Arcade Drive"));
             add("Stick Drive", driveMode.add("Stick Drive"));
-            
-            final DashboardTriggerChoice autonSide = new DashboardTriggerChoice("Auton Side");
-            add("Auton Left Side", autonSide.addDefault("Autonomous: Left Side"));
-            add("Auton Right Side", autonSide.add("Autonomous: Right Side"));
         }});
     }
 }

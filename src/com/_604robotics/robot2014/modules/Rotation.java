@@ -19,14 +19,14 @@ public class Rotation extends Module {
     private final MA3A10 encoder = new MA3A10(1, 1);
     private final Victor motor = new Victor(3);
     
-    private final AntiWindupPIDController pid = new AntiWindupPIDController(-0.025, 0, Double.MAX_VALUE, 1, -0.025, encoder, motor);
+    private final AntiWindupPIDController pid = new AntiWindupPIDController(-0.025, -0.003, 10, 0.9, -0.020, encoder, motor, 0.01);
     
-    private double baseAngle = 185D;
+    private double baseAngle = 196D;
             
     public Rotation () {
         SmartDashboard.putData("Rotation PID", pid);
         
-        pid.setAbsoluteTolerance(4);
+        pid.setAbsoluteTolerance(2);
         
         this.set(new DataMap() {{
             add("Base Angle", new Data() {
@@ -80,10 +80,25 @@ public class Rotation extends Module {
                 define("power", 0D);
                 define("calibrate", false);
             }}) {
+                private final Timer calibrateTimer = new Timer();
+                private boolean calibrating = false;
+                
                 public void run (ActionData data) {
                     motor.set(data.get("power"));
-                    if (data.is("calibrate"))
-                        baseAngle = encoder.getAngle();
+                    if (data.is("calibrate")) {
+                        if (!calibrating) {
+                            calibrating = true;
+                            calibrateTimer.start();
+                        }
+                        
+                        if (calibrateTimer.get() > 2) {
+                            baseAngle = encoder.getAngle();
+                        }
+                    } else {
+                        calibrating = false;
+                        calibrateTimer.stop();
+                        calibrateTimer.reset();
+                    }
                 }
                 
                 public void end (ActionData data) {
@@ -91,10 +106,9 @@ public class Rotation extends Module {
                 }
             });
             
-            add("Manual Angle", new AngleAction());
-            
             add("Stow",   new AngleAction());
             add("Shoot",  new AngleAction());
+            add("Close",  new AngleAction());
             add("Ground", new AngleAction());
             
             add("Hold", new Action() {

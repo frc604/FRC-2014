@@ -17,9 +17,19 @@ public class Intake extends Module {
                 }
             });
 
-            add("On", new Action() {
+            add("Suck", new Action() {
                 public void run(ActionData data) {
                     motor.set(-1D);
+                }
+
+                public void end(ActionData data) {
+                    motor.stopMotor();
+                }
+            });
+
+            add("Spit", new Action() {
+                public void run(ActionData data) {
+                    motor.set(1D);
                 }
 
                 public void end(ActionData data) {

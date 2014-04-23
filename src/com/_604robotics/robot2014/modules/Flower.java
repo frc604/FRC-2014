@@ -58,8 +58,8 @@ public class Flower extends Module {
             
             add("Drop", new Action() {
                 public void begin (ActionData data) {
-                    top.set(true);
-                    sides.set(true);
+                    top.set(false);
+                    sides.set(false);
                     bottom.set(false);
                     
                     travelTimer.reset();
