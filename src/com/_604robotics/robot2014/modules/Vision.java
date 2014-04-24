@@ -53,6 +53,8 @@ public class Vision extends Module {
                                                                   "No Side") + ".");
                         }
                         ready = true;
+                    } else {
+                        ready = false;
                     }
                 }
                 
