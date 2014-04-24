@@ -3,6 +3,7 @@ package com._604robotics.robot2014.modules;
 import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.ElasticController;
+import com._604robotics.robotnik.logging.Logger;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
 import com._604robotics.robotnik.trigger.TriggerMap;
@@ -40,14 +41,19 @@ public class Vision extends Module {
                 }
                 
                 public void run (ActionData data) {
-                    if (data.trigger("Left Side") && data.trigger("Left Target"))
+                    if (data.trigger("Left Side") && data.trigger("Left Target")) {
                         ready = true;
-                    else if (data.trigger("Right Side") && data.trigger("Right Target"))
+                    } else if (data.trigger("Right Side") && data.trigger("Right Target")) {
                         ready = true;
-                    else if (timeout.get() > 7.0)
+                    } else if (timeout.get() > 7.0) {
+                        if (ready != true) {
+                            Logger.warn("Vision timed out! Dashboard setting is " +
+                                    (data.trigger("Left Side")  ? "Left Side"  :
+                                     data.trigger("Right Side") ? "Right Side" :
+                                                                  "No Side") + ".");
+                        }
                         ready = true;
-                    else
-                        ready = false;
+                    }
                 }
                 
                 public void end (ActionData data) {
