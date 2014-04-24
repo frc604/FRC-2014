@@ -28,8 +28,8 @@ public class Drive extends Module {
     private final Encoder leftEncoder = new Encoder(2, 1);
     private final Encoder rightEncoder = new Encoder(3, 4);
     
-    private final PIDController leftPID = new PIDController(0.005, 0D, 0.005, leftEncoder, leftMotor);
-    private final PIDController rightPID = new PIDController(-0.005, 0D, -0.005, rightEncoder, rightMotor);
+    private final PIDController leftPID = new PIDController(0.004, 0D, 0.005, leftEncoder, leftMotor);
+    private final PIDController rightPID = new PIDController(-0.004, 0D, -0.005, rightEncoder, rightMotor);
     
     public Drive () {
         leftEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
@@ -41,8 +41,8 @@ public class Drive extends Module {
         leftPID.setAbsoluteTolerance(25);
         rightPID.setAbsoluteTolerance(25);
         
-        leftPID.setOutputRange(-0.5, 0.5);
-        rightPID.setOutputRange(-0.5, 0.5);
+        leftPID.setOutputRange(-0.45, 0.45);
+        rightPID.setOutputRange(-0.45, 0.45);
         
         SmartDashboard.putData("Left Drive PID", leftPID);
         SmartDashboard.putData("Right Drive PID", rightPID);
