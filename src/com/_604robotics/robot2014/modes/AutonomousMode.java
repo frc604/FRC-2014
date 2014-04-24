@@ -6,6 +6,7 @@ import com._604robotics.robotnik.coordinator.connectors.DataWire;
 import com._604robotics.robotnik.module.ModuleManager;
 import com._604robotics.robotnik.prefabs.measure.TriggerMeasure;
 import com._604robotics.robotnik.prefabs.trigger.TriggerAnd;
+import com._604robotics.robotnik.prefabs.trigger.TriggerNot;
 import com._604robotics.robotnik.procedure.Procedure;
 import com._604robotics.robotnik.procedure.Step;
 import com._604robotics.robotnik.trigger.TriggerAccess;
@@ -17,10 +18,8 @@ public class AutonomousMode extends Procedure {
                 this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
                 
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
-                this.bind(new Binding(modules.getModule("Intake").getAction("Suck"), new TriggerAnd(new TriggerAccess[] {
-                    modules.getModule("Shooter").getTrigger("Charged"),
-                    modules.getModule("Shooter").getTrigger("Deployed").not()
-                })));
+                this.bind(new Binding(modules.getModule("Intake").getAction("Suck"),
+                        new TriggerNot(modules.getModule("Shooter").getAction("Deploy").active())));
             }
         });
     }
