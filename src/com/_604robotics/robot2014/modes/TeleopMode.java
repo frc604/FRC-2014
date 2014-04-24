@@ -127,14 +127,12 @@ public class TeleopMode extends Coordinator {
             
             /* Flower */
             {
-                this.bind(new Binding(modules.getModule("Flower").getAction("Close"),  new TriggerOr(new TriggerAccess[] {
-                    manipulator.buttons.Button4, manipulator.buttons.Button11
-                })));
+                this.bind(new Binding(modules.getModule("Flower").getAction("Close"),  manipulator.buttons.Button4));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Open"),   manipulator.buttons.Button5));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Pickup"), manipulator.buttons.Button2));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Drop"),   manipulator.buttons.Button8));
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),  new TriggerOr(new TriggerAccess[] {
-                    manipulator.buttons.Button3
+                    manipulator.buttons.Button3, manipulator.buttons.Button11
                 })));
             }
             
