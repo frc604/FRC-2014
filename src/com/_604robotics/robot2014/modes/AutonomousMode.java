@@ -15,7 +15,7 @@ public class AutonomousMode extends Procedure {
     public AutonomousMode () {
         super(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
+                this.bind(new Binding(modules.getModule("Shifter").getAction("High Gear")));
                 
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
                 this.bind(new Binding(modules.getModule("Intake").getAction("Suck"),
