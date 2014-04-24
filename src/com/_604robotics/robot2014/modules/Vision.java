@@ -54,7 +54,7 @@ public class Vision extends Module {
                         }
                         ready = true;
                     } else {
-                        ready = true;
+                        ready = false;
                     }
                 }
                 
