@@ -11,7 +11,7 @@ public class Dashboard extends Module {
         this.set(new DataMap() {{
             add("Stow Angle"  , new DashboardData("Stow Angle", 0D));
             add("Shoot Angle" , new DashboardData("Shoot Angle", -54D));
-            add("Close Angle", new DashboardData("Close Angle", -17D));
+            add("Close Angle" , new DashboardData("Close Angle", -49D));
             add("Ground Angle", new DashboardData("Ground Angle", -109D));
         }});
         
