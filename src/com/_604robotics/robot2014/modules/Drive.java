@@ -41,8 +41,8 @@ public class Drive extends Module {
         leftPID.setAbsoluteTolerance(25);
         rightPID.setAbsoluteTolerance(25);
         
-        leftPID.setOutputRange(-0.45, 0.45);
-        rightPID.setOutputRange(-0.45, 0.45);
+        leftPID.setOutputRange(-0.6, 0.6);
+        rightPID.setOutputRange(-0.6, 0.6);
         
         SmartDashboard.putData("Left Drive PID", leftPID);
         SmartDashboard.putData("Right Drive PID", rightPID);
