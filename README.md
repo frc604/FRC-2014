@@ -22,7 +22,7 @@
         cd ..
         mv FRC-2014 2014
 
-        NOTE: If you recieve errors when trying "git clone git@github.com:frc604/FRC-2014.git" [read this][5] 
+NOTE: If you recieve errors when trying "git clone git@github.com:frc604/FRC-2014.git" [read this][5] 
 
  6. Go to Netbeans and create a new "Simple Robot Template" project with the
     following settings:
