@@ -30,8 +30,8 @@ NOTE: If you recieve errors when trying "git clone git@github.com:frc604/FRC-201
     | Field            | Value                      |
     | ---------------- | -------------------------- |
     | Project Name     | FRC-2014                   |
-    | Package          | com._604robotics.robot2014 |
-    | Main Robot Class | Robot2014                  |
+    | Project Package  | com._604robotics.robot2014 |
+    | Robot Class      | Robot2014                  |
 
     If you get strange errors starting up the code after a deploy, it's because
     you messed these settings up!
