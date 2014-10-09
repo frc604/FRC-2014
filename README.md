@@ -22,6 +22,8 @@
         cd ..
         mv FRC-2014 2014
 
+        NOTE: If you recieve errors when trying "git clone git@github.com:frc604/FRC-2014.git" [read this][5] 
+
  6. Go to Netbeans and create a new "Simple Robot Template" project with the
     following settings:
 
@@ -51,4 +53,4 @@ If you have any questions, talked to [Michael][4].
 [2]: http://wpilib.screenstepslive.com/s/3120/m/7885/l/79407-configuring-the-netbeans-installation
 [3]: http://git-scm.com/
 [4]: mailto:mdsmtp@gmail.com
-
+[5]: https://help.github.com/articles/generating-ssh-keys/
