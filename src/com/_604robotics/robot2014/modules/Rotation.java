@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Rotation extends Module {
-    private final MA3A10 encoder = new MA3A10(1, 1);
-    private final Victor motor = new Victor(3);
+    private final MA3A10 encoder = new MA3A10(1, 1); //I have no idea what this device is. Something tossed on the rotation mechanism if I were to guess.
+    private final Victor motor = new Victor(3); //new victor in channel 3
     
-    private final AntiWindupPIDController pid = new AntiWindupPIDController(-0.025, 0, Double.MAX_VALUE, 1, -0.025, encoder, motor);
+    private final AntiWindupPIDController pid = new AntiWindupPIDController(-0.025, 0, Double.MAX_VALUE, 1, -0.025, encoder/*input*/, motor/*output*/);
     
     private double baseAngle = 185D;
             

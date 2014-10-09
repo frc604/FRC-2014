@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Flower extends Module {
-    private final Solenoid top = new Solenoid(4);
-    private final Solenoid sides = new Solenoid(5);
-    private final Solenoid bottom = new Solenoid(3);
+    private final Solenoid top = new Solenoid(4); //top solenoid in channel 4
+    private final Solenoid sides = new Solenoid(5); //side solenoids in channel 5
+    private final Solenoid bottom = new Solenoid(3); //bottom solenoid in channel 3
     
     private final Timer travelTimer = new Timer();
     
@@ -20,7 +20,7 @@ public class Flower extends Module {
         this.set(new TriggerMap() {{
             add("Travelling", new Trigger() {
                 public boolean run () {
-                    return travelTimer.get() < 0.6;
+                    return travelTimer.get() < 0.6; //petals always travel for at least .6 seconds
                 }
             });
         }});
@@ -28,9 +28,9 @@ public class Flower extends Module {
         this.set(new StateController () {{
             addDefault("Close", new Action() {
                 public void begin (ActionData data) {
-                    top.set(false);
-                    sides.set(false);
-                    bottom.set(false);
+                    top.set(false); //for the closed polition, the top petal is closed
+                    sides.set(false); //the sides are closed
+                    bottom.set(false); //the bottom is closed
                     
                     travelTimer.reset();
                 }
@@ -38,9 +38,9 @@ public class Flower extends Module {
             
             add("Open", new Action() {
                 public void begin (ActionData data) {
-                    top.set(true);
-                    sides.set(true);
-                    bottom.set(true);
+                    top.set(true); //for the open position, the top petal is open
+                    sides.set(true); //the sides are open
+                    bottom.set(true); //and the bottom is open
                     
                     travelTimer.reset();
                 }
@@ -48,9 +48,9 @@ public class Flower extends Module {
             
             add("Pickup", new Action() {
                 public void begin (ActionData data) {
-                    top.set(false);
-                    sides.set(false);
-                    bottom.set(false);
+                    top.set(false); //for the pickup position, the top is closed
+                    sides.set(false); //the sides are closed
+                    bottom.set(false); //and the bottom is closed
                     
                     travelTimer.reset();
                 }
@@ -58,9 +58,9 @@ public class Flower extends Module {
             
             add("Drop", new Action() {
                 public void begin (ActionData data) {
-                    top.set(true);
-                    sides.set(true);
-                    bottom.set(false);
+                    top.set(true); //for the dropping position, the top petal is open
+                    sides.set(true); //the sides are opened
+                    bottom.set(false); //and the bottom is closed
                     
                     travelTimer.reset();
                 }
@@ -68,9 +68,9 @@ public class Flower extends Module {
             
             add("Shoot", new Action() {
                 public void begin (ActionData data) {
-                    top.set(true);
-                    sides.set(false);
-                    bottom.set(false);
+                    top.set(true); //for the shooting position, the top petal is open
+                    sides.set(false); //the sides are closed
+                    bottom.set(false); //and the bottom is closed
                     
                     travelTimer.reset();
                 }

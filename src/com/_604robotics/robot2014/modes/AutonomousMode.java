@@ -45,15 +45,15 @@ public class AutonomousMode extends Procedure {
         
         add("Pause", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Ready")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Vision").getAction("Pause")));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
+                this.bind(new Binding(modules.getModule("Vision").getAction("Pause"))); //pause vision
+                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"))); //put flower into the shoot position
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle"))); //I can't figure out how rotation works at all. Ask Michael about this.
             }
         }));
         
         add("Aim", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
             modules.getModule("Rotation").getTrigger("At Angle Target"),
-            modules.getModule("Flower").getTrigger("Travelling").not()
+            modules.getModule("Flower").getTrigger("Travelling").not() //while the flower isn't traveling
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
@@ -63,7 +63,7 @@ public class AutonomousMode extends Procedure {
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
+                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true)); //fire the ball
             }
         }));
     }
