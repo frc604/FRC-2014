@@ -20,7 +20,7 @@ import com._604robotics.robotnik.module.ModuleMap;
 
 public class Robot2014 extends Robot {
     public Robot2014 () {
-        this.set(new ModuleMap() {{
+        this.set(new ModuleMap() {{  //adds each module to a hashtable named moduleTable. Not sure what a hashtable is exactly. Figure this out.
             add("Dashboard", new Dashboard());
             add("Vision", new Vision());
             add("Drive", new Drive());

@@ -14,12 +14,12 @@ public class AutonomousMode extends Procedure {
     public AutonomousMode () {
         super(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear")));
+                this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear"))); //set the shifter into low gear
                 
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
+                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"))); //retract the shooter
                 this.bind(new Binding(modules.getModule("Intake").getAction("On"), new TriggerAnd(new TriggerAccess[] {
                     modules.getModule("Shooter").getTrigger("Charged"),
-                    modules.getModule("Shooter").getTrigger("Deployed").not()
+                    modules.getModule("Shooter").getTrigger("Deployed").not()//turn intake on if shooter is charged and not deployed
                 })));
             }
         });
@@ -34,26 +34,26 @@ public class AutonomousMode extends Procedure {
         }));
         
         add("Align", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
-            modules.getModule("Drive").getTrigger("At Servo Target"),
+            modules.getModule("Drive").getTrigger("At Servo Target"), //when the servo is at target and the shooter is charged
             modules.getModule("Shooter").getTrigger("Charged")
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Drive").getAction("Servo")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1663));
+                this.fill(new DataWire(modules.getModule("Drive").getAction("Servo"), "clicks", 1663)); //drive forwards 1663 clicks
             }
         }));
         
         add("Pause", new Step(new TriggerMeasure(modules.getModule("Vision").getTrigger("Ready")), new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Vision").getAction("Pause")));
-                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
+                this.bind(new Binding(modules.getModule("Vision").getAction("Pause"))); //pause vision
+                this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"))); //put flower into the shoot position
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle"))); //I can't figure out how rotation works at all. Ask Michael about this.
             }
         }));
         
         add("Aim", new Step(new TriggerMeasure(new TriggerAnd(new TriggerAccess[] {
             modules.getModule("Rotation").getTrigger("At Angle Target"),
-            modules.getModule("Flower").getTrigger("Travelling").not()
+            modules.getModule("Flower").getTrigger("Travelling").not() //while the flower isn't traveling
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
@@ -63,7 +63,7 @@ public class AutonomousMode extends Procedure {
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Rotation").getAction("Manual Angle")));
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
+                this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true)); //fire the ball
             }
         }));
     }

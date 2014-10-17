@@ -8,25 +8,26 @@ import com._604robotics.robotnik.trigger.Trigger;
 import com._604robotics.robotnik.trigger.TriggerMap;
 import edu.wpi.first.wpilibj.Compressor;
 
+/*controls the compressor for pneumatics*/
 public class Regulator extends Module {
-    private final Compressor compressor = new Compressor(5, 1);
+    private final Compressor compressor = new Compressor(5/*pressure switch channel*/, 1/*compressor Relay Channel*/);
     
     public Regulator () {
         this.set(new TriggerMap() {{
             add("Charged", new Trigger() {
                 public boolean run () {
-                    return compressor.getPressureSwitchValue();
+                    return compressor.getPressureSwitchValue(); //how much pressure
                 }
             });
         }});
         
         this.set(new ElasticController() {{
             addDefault("On", new Action() {
-                public void begin (ActionData data) {
+                public void begin (ActionData data) { //starts the compressor
                     compressor.start();
                 }
                 
-                public void end (ActionData data) {
+                public void end (ActionData data) { //stops the compressor
                     compressor.stop();
                 }
             });

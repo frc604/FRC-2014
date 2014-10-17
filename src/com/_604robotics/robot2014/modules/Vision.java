@@ -28,31 +28,31 @@ public class Vision extends Module {
             
             add("Snapped", new Trigger() {
                 public boolean run () {
-                    return state > SNAPPING;
+                    return state > SNAPPING; //if the state is greater than 0, is snapped
                 }
             });
             
             add("Ready", new Trigger() {
                 public boolean run () {
-                    return state >= READY;
+                    return state >= READY; //if the state is greater or equal to 2, is ready
                 }
             });
         }});
         
         this.set(new ElasticController() {{
-            addDefault("Idle");
+            addDefault("Idle"); //nothing doing anything by default
             
             add("Snap", new Action() {
                 private final Timer timer = new Timer();
                 
                 public void begin (ActionData data) {
-                    state = SNAPPING;
-                    timer.start();
+                    state = SNAPPING; //set the state to snapping
+                    timer.start(); //start the timer
                 }
                 
                 public void run (ActionData data) {
-                    if (timer.get() > 1.5) {
-                        state = PAUSING;
+                    if (timer.get() > 1.5) { //if 1.5 miliseconds have passed
+                        state = PAUSING; //the state is to be set to pausing
                     } else {
                         leftTarget  = data.trigger("Left Target");
                         rightTarget = data.trigger("Right Target");
@@ -60,8 +60,8 @@ public class Vision extends Module {
                 }
                 
                 public void end (ActionData data) {
-                    timer.stop();
-                    timer.reset();
+                    timer.stop(); //stop the timer
+                    timer.reset(); //reset it to 0
                 }
             });
             
