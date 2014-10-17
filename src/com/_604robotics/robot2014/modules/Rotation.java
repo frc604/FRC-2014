@@ -91,11 +91,12 @@ public class Rotation extends Module {
                 }
             });
             
-            add("Manual Angle", new AngleAction());
+            //All of this is set in the Dashboard module? But it's not imported. I have no idea man. 
+            add("Manual Angle", new AngleAction()); //Manual angle is set to -50D
             
-            add("Stow",   new AngleAction());
-            add("Shoot",  new AngleAction());
-            add("Ground", new AngleAction());
+            add("Stow",   new AngleAction()); //Stow angle is set to 0D
+            add("Shoot",  new AngleAction()); //Shoot angle is set to -50D
+            add("Ground", new AngleAction()); //Ground angle is set to -108D
             
             add("Hold", new Action() {
                 public void begin (ActionData data) {

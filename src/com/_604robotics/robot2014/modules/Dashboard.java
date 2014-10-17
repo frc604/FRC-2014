@@ -9,7 +9,7 @@ import com._604robotics.robotnik.trigger.sources.DashboardTriggerChoice;
 public class Dashboard extends Module {
     public Dashboard () {
         this.set(new DataMap() {{
-            add("Manual Angle", new DashboardData("Manual Angle", -50D));
+            add("Manual Angle", new DashboardData("Manual Angle", -50D)); //sets up the angles for each rotation position
             
             add("Stow Angle"  , new DashboardData("Stow Angle", 0D));
             add("Shoot Angle" , new DashboardData("Shoot Angle", -50D));

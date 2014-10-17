@@ -22,7 +22,7 @@ public class Intake extends Module {
                     motor.set(-1D);
                 }
 
-                public void end(ActionData data) {
+                public void end(ActionData data) { //stops the intake
                     motor.stopMotor();
                 }
             });
