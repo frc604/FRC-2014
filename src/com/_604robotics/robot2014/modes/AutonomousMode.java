@@ -17,7 +17,8 @@ public class AutonomousMode extends Procedure {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Shifter").getAction("High Gear")));
                 
-                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract")));
+                this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"),
+                        modules.getModule("Vision").getTrigger("Auton Disabled").not()));
                 this.bind(new Binding(modules.getModule("Intake").getAction("Suck"),
                         new TriggerNot(modules.getModule("Shooter").getAction("Deploy").active())));
             }
@@ -49,13 +50,13 @@ public class AutonomousMode extends Procedure {
         })), new Coordinator() {
             protected void apply (ModuleManager modules) {
                 this.bind(new Binding(modules.getModule("Flower").getAction("Shoot")));
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Auton")));
             }
         }));
         
         add("Shoot", new Step(new Coordinator() {
             protected void apply (ModuleManager modules) {
-                this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot")));
+                this.bind(new Binding(modules.getModule("Rotation").getAction("Auton")));
                 this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), true));
             }
         }));

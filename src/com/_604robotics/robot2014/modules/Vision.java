@@ -17,11 +17,15 @@ public class Vision extends Module {
     public Vision () {
         this.set(new TriggerMap() {{
             final DashboardTriggerChoice autonSide = new DashboardTriggerChoice("Auton Side");
-            add("Left Side", autonSide.addDefault("Autonomous: Left Side"));
-            add("Right Side", autonSide.add("Autonomous: Right Side"));
+            add("Auton Disabled", autonSide.addDefault("Autonomous: Disabled"));
+            add("No Vision",      autonSide.add("Autonomous: No Vision"));
+            add("Cheapo-Vision",  autonSide.add("Autonomous: Cheapo-Vision"));
+            add("Left Side",      autonSide.add("Autonomous: Left Side"));
+            add("Right Side",     autonSide.add("Autonomous: Right Side"));
             
-            add("Left Target",  new NetworkTrigger("robot2014.vision", "leftTarget",  false));
-            add("Right Target", new NetworkTrigger("robot2014.vision", "rightTarget", false));
+            add("Driver Target", new NetworkTrigger("cheapo-vision", "target_seen",    false));
+            add("Left Target",   new NetworkTrigger("robot2014.vision", "leftTarget",  false));
+            add("Right Target",  new NetworkTrigger("robot2014.vision", "rightTarget", false));
             
             add("Ready", new Trigger() {
                 public boolean run () {
@@ -41,7 +45,13 @@ public class Vision extends Module {
                 }
                 
                 public void run (ActionData data) {
-                    if (data.trigger("Left Side") && data.trigger("Left Target")) {
+                    if (data.trigger("Auton Disabled")) {
+                        ready = false;
+                    } else if (data.trigger("No Vision")) {
+                        ready = true;
+                    } else if (data.trigger("Cheapo-Vision") && data.trigger("Driver Target")) {
+                        ready = true;
+                    } else if (data.trigger("Left Side") && data.trigger("Left Target")) {
                         ready = true;
                     } else if (data.trigger("Right Side") && data.trigger("Right Target")) {
                         ready = true;

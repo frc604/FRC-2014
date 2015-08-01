@@ -108,7 +108,7 @@ public class Rotation extends Module {
             
             add("Stow",   new AngleAction());
             add("Shoot",  new AngleAction());
-            add("Close",  new AngleAction());
+            add("Auton",  new AngleAction());
             add("Ground", new AngleAction());
             
             add("Hold", new Action() {

@@ -3,6 +3,7 @@ package com._604robotics.robot2014.modules;
 import com._604robotics.robotnik.action.Action;
 import com._604robotics.robotnik.action.ActionData;
 import com._604robotics.robotnik.action.controllers.StateController;
+import com._604robotics.robotnik.action.field.FieldMap;
 import com._604robotics.robotnik.module.Module;
 import com._604robotics.robotnik.trigger.Trigger;
 import com._604robotics.robotnik.trigger.TriggerMap;
@@ -41,16 +42,6 @@ public class Flower extends Module {
                     top.set(true);
                     sides.set(true);
                     bottom.set(true);
-                    
-                    travelTimer.reset();
-                }
-            });
-            
-            add("Pickup", new Action() {
-                public void begin (ActionData data) {
-                    top.set(false);
-                    sides.set(false);
-                    bottom.set(false);
                     
                     travelTimer.reset();
                 }
