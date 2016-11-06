@@ -198,49 +198,52 @@ public class TeleopMode extends Coordinator {
             protected void apply(ModuleManager modules) {
                 /* Shifter */
                 {
-                    final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.B, false);
+                    final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.RB, false);
                     this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear"), toggle.off));
                     this.bind(new Binding(modules.getModule("Shifter").getAction("High Gear"), toggle.on));
                 }
 
                 /* Shooter */
                 {
-                    this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"), driverXbox.buttons.Y));
-                    this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), driverXbox.buttons.A));
+                    this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"), driverXbox.buttons.A));
+                    this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), new TriggerAnd(new TriggerAccess[] {
+                        driverXbox.buttons.LeftStick,
+                        driverXbox.buttons.RT
+                    })));
                 }
-
+                
                 /* Rotation */
                 {
-                    /* Manual Operation */
-                    {
-                        final TriggerAccess rotationOverride = new TriggerAnd(new TriggerAccess[]{
-                            modules.getModule("Dashboard").getTrigger("Stick Drive"), driverXbox.buttons.RightStick
-                        });
-
-                        this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "power", driverXbox.rightStick.Y, rotationOverride));
-                        this.fill(new DataWire(modules.getModule("Rotation").getAction("Manual"), "calibrate", driverXbox.buttons.Back));
-                    }
 
                     /* Rotation Presets */
                     {
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Ground"), driverXbox.buttons.RB));
-                        this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"), driverXbox.buttons.X));
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Ground"),
+                            driverXbox.buttons.LT));
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot"),
+                            driverXbox.buttons.B));
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"),
+                            driverXbox.buttons.Y));
                     }
                 }
 
                 /* Flower */
                 {
-                    this.bind(new Binding(modules.getModule("Flower").getAction("Close"), driverXbox.buttons.RT, true));
-                    this.bind(new Binding(modules.getModule("Flower").getAction("Open"), driverXbox.buttons.LT, true));
-                    this.bind(new Binding(modules.getModule("Flower").getAction("Close"), driverXbox.buttons.RB));
-                    this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"), driverXbox.buttons.LB));
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Close"),
+                        new TriggerOr(new TriggerAccess[] {
+                            modules.getModule("Rotation").getAction("Ground").active(),
+                            modules.getModule("Rotation").getAction("Stow").active()
+                        })));
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),
+                        modules.getModule("Rotation").getAction("Shoot").active()));
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Open"), driverXbox.buttons.X));
                 }
 
                 /* Intake */
                 {
-                    this.bind(new Binding(modules.getModule("Intake").getAction("Suck"), new TriggerOr(new TriggerAccess[]{
-                        driverXbox.buttons.RB, driverXbox.buttons.RT
-                    })));
+                    this.bind(new Binding(modules.getModule("Intake").getAction("Suck"),
+                        modules.getModule("Rotation").getAction("Ground").active()));
+                    this.bind(new Binding(modules.getModule("Intake").getAction("Spit"),
+                        driverXbox.buttons.LB));
                 }
             }
         }));
