@@ -111,10 +111,20 @@ public class TeleopMode extends Coordinator {
                     this.bind(new Binding(modules.getModule("Flower").getAction("Close"),
                         new TriggerOr(new TriggerAccess[] {
                             modules.getModule("Rotation").getAction("Ground").active(),
-                            modules.getModule("Rotation").getAction("Stow").active()
+                            new TriggerAnd(new TriggerAccess[] {
+                                modules.getModule("Rotation").getAction("Stow").active(),
+                                new TriggerNot(manipXbox.buttons.X)
+                            })
                         })));
                     this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),
                         modules.getModule("Rotation").getAction("Shoot").active()));
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Open"),
+                        new TriggerAnd(new TriggerAccess[] {
+                            new TriggerNot(modules.getModule("Rotation").getAction("Ground").active()),
+                            new TriggerNot(modules.getModule("Rotation").getAction("Shoot").active()),
+                            manipXbox.buttons.X
+                        })
+                    ));
                 }
 
                 /* Intake */
