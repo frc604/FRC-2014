@@ -26,6 +26,7 @@ public class Dashboard extends Module {
             add("Xbox-Xbox", controlMode.addDefault("Xbox-Xbox"));
             add("Xbox-Joystick", controlMode.add("Xbox-Joystick"));
             add("Single Xbox", controlMode.add("Single Xbox"));
+            add("Override", controlMode.add("Override"));
             
             add("Safety Enabled", new DashboardTrigger("Safety Enabled", false));
         }});

@@ -19,6 +19,7 @@ public class TeleopMode extends Coordinator {
     //private final JoystickController rightDrive = new JgoystickController(2);
     
     private final XboxController driverXbox = new XboxController(1);
+    private final XboxController override = new XboxController(2);
     
     
     private final Joystick manipulator = new Joystick(3);
@@ -43,30 +44,38 @@ public class TeleopMode extends Coordinator {
         
         driverXbox.leftStick.Y.setDeadband(0.2);
         driverXbox.rightStick.Y.setDeadband(0.2);
+        
+        override.leftStick.X.setFactor(-1);
+        override.rightStick.X.setFactor(-1);
+        
+        override.leftStick.Y.setFactor(-1);
+        override.rightStick.Y.setFactor(-1);
+        
+        override.leftStick.X.setDeadband(0.2);
+        override.rightStick.X.setDeadband(0.2);
+        
+        override.leftStick.Y.setDeadband(0.2);
+        override.rightStick.Y.setDeadband(0.2);
     }
     
     protected void apply (ModuleManager modules) {
-        /* Shared Controls */
-        {
-            /* Drive */
-            {
-                this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", driverXbox.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driverXbox.rightStick.Y));
-
-                this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driverXbox.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", driverXbox.rightStick.X));
-
-                this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driverXbox.leftStick.Y));
-                this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", driverXbox.leftStick.X));
-            }
-        }
-        
         /* Xbox-Xbox Mode */
         this.group(new Group(modules.getModule("Dashboard").getTrigger("Xbox-Xbox"), new Coordinator() {
             protected void apply(ModuleManager modules) {
+                /* Drive */
+                {
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driverXbox.rightStick.Y));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", driverXbox.rightStick.X));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", driverXbox.leftStick.X));
+                }
                 /* Shifter */
                 {
                     final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.RB, false);
@@ -130,6 +139,20 @@ public class TeleopMode extends Coordinator {
         /* Xbox-Joystick Mode */
         this.group(new Group(modules.getModule("Dashboard").getTrigger("Xbox-Joystick"), new Coordinator() {
             protected void apply(ModuleManager modules) {
+                /* Drive */
+                {
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driverXbox.rightStick.Y));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", driverXbox.rightStick.X));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", driverXbox.leftStick.X));
+                }
                 /* Shifter */
                 {
                     final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.RB, false);
@@ -184,7 +207,6 @@ public class TeleopMode extends Coordinator {
                         manipJoystick.buttons.Button3, manipJoystick.buttons.Button11
                     })));
                 }
-
                 /* Intake */
                 {
                     this.bind(new Binding(modules.getModule("Intake").getAction("Suck"), manipJoystick.buttons.Button2));
@@ -196,6 +218,20 @@ public class TeleopMode extends Coordinator {
         /* Single Xbox Mode */
         this.group(new Group(modules.getModule("Dashboard").getTrigger("Single Xbox"), new Coordinator() {
             protected void apply(ModuleManager modules) {
+                /* Drive */
+                {
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driverXbox.rightStick.Y));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", driverXbox.rightStick.X));
+
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", driverXbox.leftStick.X));
+                }
                 /* Shifter */
                 {
                     final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.RB, false);
@@ -244,6 +280,115 @@ public class TeleopMode extends Coordinator {
                         modules.getModule("Rotation").getAction("Ground").active()));
                     this.bind(new Binding(modules.getModule("Intake").getAction("Spit"),
                         driverXbox.buttons.LB));
+                }
+            }
+        }));
+        /* Override */
+        this.group(new Group(modules.getModule("Dashboard").getTrigger("Override"), new Coordinator() {
+            protected void apply(ModuleManager modules) {
+                final TriggerToggle mode = new TriggerToggle(override.buttons.A, false);
+                // TODO: implement override controls
+                /* Drive */
+                {
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Tank Drive"), modules.getModule("Dashboard").getTrigger("Tank Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "left", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Tank Drive"), "right", driverXbox.rightStick.Y));
+                    
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Arcade Drive"), modules.getModule("Dashboard").getTrigger("Arcade Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Arcade Drive"), "turn", driverXbox.rightStick.X));
+                    
+                    this.bind(new Binding(modules.getModule("Drive").getAction("Stick Drive"), modules.getModule("Dashboard").getTrigger("Stick Drive")));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "throttle", driverXbox.leftStick.Y));
+                    this.fill(new DataWire(modules.getModule("Drive").getAction("Stick Drive"), "turn", driverXbox.leftStick.X));
+                }
+                /* Shifter */
+                {
+                    final TriggerToggle toggle = new TriggerToggle(driverXbox.buttons.RB, false);
+                    this.bind(new Binding(modules.getModule("Shifter").getAction("Low Gear"), 
+                            new TriggerAnd(new TriggerAccess[]{
+                                    mode.off,
+                                    toggle.off
+                })));
+                    this.bind(new Binding(modules.getModule("Shifter").getAction("High Gear"), 
+                            new TriggerAnd(new TriggerAccess[]{
+                                mode.off,
+                                toggle.on
+                })));
+                }
+                /* Shooter */
+                {
+                    this.bind(new Binding(modules.getModule("Shooter").getAction("Retract"), 
+                            new TriggerAnd( new TriggerAccess[]{
+                                    mode.off,
+                                    manipXbox.buttons.RB
+                        })));
+                    this.bind(new Binding(modules.getModule("Shooter").getAction("Deploy"), new TriggerAnd(new TriggerAccess[] {
+                        new TriggerOr(new TriggerAccess[] {
+                            modules.getModule("Dashboard").getTrigger("Safety Enabled").not(),
+                                driverXbox.buttons.LB
+                            }),
+                                manipXbox.buttons.LeftStick,
+                                manipXbox.buttons.RT,
+                                mode.off
+                        })));
+                }
+                
+                /* Rotation */
+                {
+                    /* Manual Operation */
+                    {
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Hold"), new TriggerAnd( new TriggerAccess[]{
+                                mode.off,
+                                manipXbox.buttons.X
+                        })));
+                    }
+
+                    /* Rotation Presets */
+                    {
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Ground"),
+                                new TriggerAnd( new TriggerAccess[]{
+                                        mode.off,
+                                        manipXbox.buttons.A
+                            })));
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Shoot"),
+                                new TriggerAnd( new TriggerAccess[]{
+                                        mode.off,
+                                        manipXbox.buttons.B
+                        
+                                })));
+                        this.bind(new Binding(modules.getModule("Rotation").getAction("Stow"),
+                                new TriggerAnd( new TriggerAccess[]{
+                                            mode.off,
+                                            manipXbox.buttons.Y
+                        
+                            })));
+                    }
+                }
+
+                /* Flower */
+                {
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Close"),
+                        new TriggerOr(new TriggerAccess[] {
+                            modules.getModule("Rotation").getAction("Ground").active(),
+                            modules.getModule("Rotation").getAction("Stow").active()
+                        })));
+                    this.bind(new Binding(modules.getModule("Flower").getAction("Shoot"),
+                        modules.getModule("Rotation").getAction("Shoot").active()));
+                }
+
+                /* Intake */
+                {
+                    this.bind(new Binding(modules.getModule("Intake").getAction("Suck"),
+                            new TriggerAnd( new TriggerAccess[]{
+                                    mode.off,
+                                    manipXbox.buttons.LT
+                            })));
+                    this.bind(new Binding(modules.getModule("Intake").getAction("Spit"),
+                            new TriggerAnd( new TriggerAccess[]{
+                                    mode.off,
+                                    manipXbox.buttons.LB
+                            })));
                 }
             }
         }));
